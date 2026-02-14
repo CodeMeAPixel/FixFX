@@ -11,6 +11,7 @@ import {
   X,
   Server,
   Palette,
+  Braces,
 } from "lucide-react";
 
 export const baseOptions: HomeLayoutProps = {
@@ -257,6 +258,23 @@ export const baseOptions: HomeLayoutProps = {
           description:
             "Download official FixFX logos, icons, and brand guidelines.",
           url: "/brand",
+        },
+        {
+          menu: {
+            banner: (
+              <div className="flex h-20 w-full items-center justify-center gap-x-1">
+                <FixFXIcon className="size-6" stroke="#f59e0b" />
+                <h1 className="text-fd-foreground text-2xl font-bold">
+                  JSON Validator
+                </h1>
+              </div>
+            ),
+          },
+          icon: <Braces className="size-6" stroke="#f59e0b" />,
+          text: "JSON Validator",
+          description:
+            "Validate JSON syntax and txAdmin Discord bot embed configurations.",
+          url: "/validator",
         },
       ],
     },
