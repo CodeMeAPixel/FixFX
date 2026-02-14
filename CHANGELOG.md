@@ -5,6 +5,44 @@ All notable changes to FixFX will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2026-02-14
+
+### Added
+
+#### JSON Validator
+
+- **Validator Page** (`/validator`) - Full-featured JSON validator with txAdmin support
+  - Generic JSON syntax validation with formatted output
+  - txAdmin Discord embed JSON validation with field-level issue reporting
+  - txAdmin embed config JSON validation (status strings, colors, buttons)
+  - Collapsible sidebar with validation mode selector, quick templates, and txAdmin placeholder reference
+  - Click-to-insert txAdmin placeholders (`{{serverName}}`, `{{statusString}}`, etc.)
+  - Format/prettify and clear actions with keyboard shortcut (Ctrl+Enter)
+  - Client-side fallback validation when the backend API is unreachable
+  - Mobile-responsive layout with dropdown validation type selector
+  - Suspense loading state with progress indicator
+- **Validator Layout** - SEO metadata for `/validator` with Open Graph tags
+- **Navigation** - Added JSON Validator to the Resources menu in the nav bar with Braces icon
+- **API Route Documentation** - Added validator endpoint to the API index route
+
+### Changed
+
+#### Data Fetching & Artifacts
+
+- **`useFetch` Hook** - Migrated from manual `useState`/`useEffect`/`AbortController` to TanStack Query (`useQuery`)
+  - Automatic request deduplication, caching, and background refetching
+  - Simplified error handling with typed errors (`E = Error`)
+  - Query keys derived from URL and dependency array for proper cache invalidation
+  - Removed manual abort controller management (handled by TanStack Query)
+- **`GitHubFetcher`** - Migrated from Axios to native `fetch` API
+  - Removed `axios` dependency entirely
+  - Consolidated request logic into a single private `request<T>()` method
+  - Uses native `AbortController` with configurable timeout
+  - Proper rate limit tracking via `Headers.get()` instead of raw header objects
+  - Improved error handling for 304 Not Modified responses
+  - Cleaner POST/PUT/DELETE methods delegating to the shared request method
+- **Query Provider** - Added TanStack Query provider for `useFetch` integration
+
 ## [1.1.0] - 2026-01-26
 
 ### Added

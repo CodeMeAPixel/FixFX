@@ -19,6 +19,11 @@ export async function GET() {
         path: "/api/artifacts?platform=windows&product=fivem",
         description: "FiveM/RedM server artifacts",
       },
+      {
+        name: "validator",
+        path: "/api/validator/validate",
+        description: "JSON validator with txAdmin embed support",
+      },
     ],
   });
 }
