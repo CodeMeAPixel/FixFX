@@ -1,7 +1,7 @@
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "JSON Validator | FixFX",
+  title: "JSON Validator",
   description:
     "Validate JSON syntax and txAdmin Discord bot embed configurations. Check your embed JSON and config JSON for errors before deploying.",
   keywords: [

@@ -5,6 +5,49 @@ All notable changes to FixFX will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.3.0] - 2026-03-04
+
+### Added
+
+#### Game References
+
+- **Game References section** (`/game-references`) — 12 new reference pages backed by the `/api/game-references` endpoints, all with search, pagination, and loading skeletons
+- **Blips** (`/game-references/blips`) — Image grid of all minimap blip icons with ID labels; secondary tab for the blip color palette with hex swatches
+- **Checkpoints** (`/game-references/checkpoints`) — Image grid of all checkpoint types with section filter tabs (standard 0–49 / type 44–46 variant)
+- **Markers** (`/game-references/markers`) — Image grid of all 44 `DRAW_MARKER` types with ID and name labels
+- **Ped Models** (`/game-references/ped-models`) — Image grid of all pedestrian models with category filter chips, prop/component counts, and pagination
+- **Weapon Models** (`/game-references/weapon-models`) — Card grid grouped by weapon type with expandable detail panels (hash key, model hash key, DLC, description, components, tints)
+- **Data Files** (`/game-references/data-files`) — Searchable table of all resource manifest `data_file` keys with file type, root element, mounter, and example columns
+- **Game Events** (`/game-references/game-events`) — Searchable table of client-side game events with descriptions
+- **Gamer Tags** (`/game-references/gamer-tags`) — Table of head display component IDs and names
+- **HUD Colors** (`/game-references/hud-colors`) — Toggle between a color swatch grid and a full RGBA/hex table for all ~234 HUD color indices
+- **Net Game Events** (`/game-references/net-game-events`) — Searchable table of `GTA_EVENT_IDS` enum entries with sequential IDs
+- **Pickup Hashes** (`/game-references/pickup-hashes`) — Searchable table of `ePickupHashes` enum entries with numeric hash values
+- **Zones** (`/game-references/zones`) — Searchable table of all 1300+ map zones with zone name ID, zone name, and description
+- **Game References Hub** (`/game-references`) — Landing page with a hero section, live stats row (category count + total entries from `/api/game-references/summary`), and a 4-column responsive card grid; each card displays a per-category entry count badge fetched from the summary endpoint
+- **Game References Layout** — Shared SEO metadata and Open Graph tags for the `/game-references` route group
+
+### Changed
+
+#### JSON Validator
+
+- **Modular Architecture** — Rewrote the monolithic 913-line `validator-content.tsx` into a fully modular plugin-based system
+  - `types.ts` — Shared TypeScript interfaces (`ValidatorType`, `IssueSeverity`, `ValidationIssue`, `ValidationResult`, `ValidatorConfig`, `ValidatorPlaceholder`)
+  - `base-validator.ts` — Abstract `BaseValidator` class with shared `parseJson`, `formatJson`, `createIssue`, and `getConfig` methods
+  - `validators/generic.ts` — `GenericJsonValidator` for plain JSON syntax validation
+  - `validators/txadmin-embed.ts` — `TxAdminEmbedValidator` with Discord embed structure and character limit enforcement
+  - `validators/txadmin-config.ts` — `TxAdminConfigValidator` with hex color, button structure, and status string/color pairing validation
+  - `registry.ts` — `ValidatorRegistry` singleton for registering, retrieving, and querying all validators
+- **Componentized UI** — Split rendering into focused, reusable components under `core/validator/components/`
+  - `ValidatorHeader` — Title, mode badge, and Format / Clear / Validate action buttons with keyboard shortcut hints
+  - `EditorPanel` — JSON input textarea with invalid-state styling and `Ctrl+Enter` hint
+  - `ResultsPanel` — Animated results display with severity badges, issue path/message/suggestion rendering, formatted output copy, and validation metadata footer (character count, line count, validation time)
+  - `ValidatorSidebar` — Collapsible sidebar (expanded `w-72` / collapsed `w-20`) with validation mode selector, quick templates, click-to-insert placeholder variables, and resource links
+- **Validation Metadata** — Results now include `validationTime`, `characterCount`, and `lineCount` surfaced in the results panel footer
+- **Type rename** — Internal validator type `txadmin-embed-config` renamed to `txadmin-config` for consistency
+
+---
+
 ## [1.2.0] - 2026-02-14
 
 ### Added

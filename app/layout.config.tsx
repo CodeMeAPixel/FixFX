@@ -12,6 +12,7 @@ import {
   Server,
   Palette,
   Braces,
+  MessageCircle,
 } from "lucide-react";
 
 export const baseOptions: HomeLayoutProps = {
@@ -43,6 +44,12 @@ export const baseOptions: HomeLayoutProps = {
       text: "Home",
       icon: <Home className="size-6" />,
       url: "/",
+    },
+    {
+      type: "main",
+      text: "Chat",
+      icon: <MessageCircle className="size-6" />,
+      url: "/chat",
     },
     {
       type: "menu",
@@ -181,16 +188,18 @@ export const baseOptions: HomeLayoutProps = {
           menu: {
             banner: (
               <div className="flex h-20 w-full items-center justify-center gap-x-1">
-                <FixFXIcon className="size-6" stroke="#2365eb" />
-                <h1 className="text-fd-foreground text-2xl font-bold">Fixie</h1>
+                <FixFXIcon className="size-6" stroke="#a855f7" />
+                <h1 className="text-fd-foreground text-2xl font-bold">
+                  Game References
+                </h1>
               </div>
             ),
           },
-          icon: <Bot className="size-6" stroke="#2365eb" />,
-          text: "Chat with Fixie",
+          icon: <Braces className="size-6" stroke="#a855f7" />,
+          text: "Game References",
           description:
-            "Fixie is a powerful AI assistant that can help you with all your CFX needs.",
-          url: "/chat",
+            "Explore various game references and resources.",
+          url: "/game-references",
         },
         {
           menu: {
@@ -275,7 +284,7 @@ export const baseOptions: HomeLayoutProps = {
           description:
             "Validate JSON syntax and txAdmin Discord bot embed configurations.",
           url: "/validator",
-        },
+        }
       ],
     },
   ],
