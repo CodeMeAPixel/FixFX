@@ -12,7 +12,7 @@ import {
   Server,
   Palette,
   Braces,
-  MessageCircle,
+v  MessageCircle,
 } from "lucide-react";
 
 export const baseOptions: HomeLayoutProps = {

