@@ -181,13 +181,13 @@ const organizationJsonLd = {
     "Documentation hub for FiveM, RedM, txAdmin, and the CitizenFX ecosystem.",
   foundingDate: "2024",
   sameAs: [
-    "https://github.com/CodeMeAPixel/FixFX",
+    "https://github.com/FixFXOSS/FixFX",
     "https://discord.gg/cYauqJfnNK",
   ],
   contactPoint: {
     "@type": "ContactPoint",
     contactType: "technical support",
-    url: "https://github.com/CodeMeAPixel/FixFX/issues",
+    url: "https://github.com/FixFXOSS/FixFX/issues",
   },
 };
 

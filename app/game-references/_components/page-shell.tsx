@@ -182,6 +182,7 @@ interface ReferenceFilterChipsProps {
     options: string[];
     value: string;
     onChange: (v: string) => void;
+    formatLabel?: (opt: string) => string;
 }
 
 export function ReferenceFilterChips({
@@ -189,6 +190,7 @@ export function ReferenceFilterChips({
     options,
     value,
     onChange,
+    formatLabel,
 }: ReferenceFilterChipsProps) {
     if (options.length === 0) return null;
     return (
@@ -207,7 +209,7 @@ export function ReferenceFilterChips({
                     size="sm"
                     onClick={() => onChange(opt)}
                 >
-                    {opt}
+                    {formatLabel ? formatLabel(opt) : opt}
                 </Button>
             ))}
         </div>

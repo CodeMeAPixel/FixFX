@@ -22,23 +22,27 @@ import {
   ComparisonTable,
 } from "@ui/components/mdx-components";
 
-# Frameworks Overview
+## Frameworks Overview
 
 FiveM supports various frameworks that provide structure, tools, and resources for server development. This section covers the most popular frameworks and how to use them effectively.
 
 ## Popular Frameworks
 
-<Cards>
-  <Card title="ESX" href="/docs/frameworks/esx">
-    The most widely used framework for FiveM, providing a complete roleplay
-    foundation with modern updates.
-  </Card>
-
-  <Card title="QBCore" href="/docs/frameworks/qbcore">
-    A modern, modular framework with extensive features and flexibility for
-    roleplay servers.
-  </Card>
-</Cards>
+<QuickLinks
+  links={[
+    {
+      title: "ESX",
+      description: "The most widely used framework for FiveM, providing a complete roleplay foundation with modern updates.",
+      href: "/docs/frameworks/esx",
+    },
+    {
+      title: "QBCore",
+      description: "A modern, modular framework with extensive features and flexibility for roleplay servers.",
+      href: "/docs/frameworks/qbcore",
+    },
+  ]}
+  columns={2}
+/>
 
 ## Choosing a Framework
 
@@ -78,11 +82,11 @@ Most FiveM frameworks include:
 
 <CheckList
   items={[
-    "Core Systems - Player management, inventory, jobs, etc.",
-    "Database Integration - For persistent data storage",
-    "UI Components - For user interaction",
-    "Resource Management - For handling server resources",
-    "API - For extending functionality",
+    "Core systems for player management, inventory, and jobs",
+    "Database integration for persistent data storage",
+    "UI components for player-facing interactions",
+    "Resource management utilities",
+    "Extensible APIs for custom functionality",
   ]}
   variant="check"
 />
@@ -91,11 +95,11 @@ Most FiveM frameworks include:
 
 <CheckList
   items={[
-    "Follow Documentation - Use official guides when available",
-    "Respect Dependencies - Understand resource dependencies",
-    "Maintain Compatibility - Test thoroughly when upgrading",
-    "Contribute - Report bugs and contribute improvements",
-    "Share Knowledge - Document your solutions for others",
+    "Follow official documentation and guides",
+    "Understand and respect resource dependencies",
+    "Test thoroughly when upgrading between versions",
+    "Report bugs and contribute improvements upstream",
+    "Document your solutions to help others in the community",
   ]}
   variant="check"
 />

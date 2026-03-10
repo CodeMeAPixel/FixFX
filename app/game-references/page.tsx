@@ -17,6 +17,9 @@ import {
     ArrowRight,
     BookOpen,
     Database,
+    Car,
+    PaintBucket,
+    Flag,
 } from "lucide-react";
 import { useFetch } from "@core/useFetch";
 import { API_URL } from "@/packages/utils/src/constants/link";
@@ -129,6 +132,33 @@ const REFERENCES = [
         color: "from-teal-500/20 to-teal-600/5 border-teal-500/20",
         iconColor: "text-teal-500",
         tag: "zones",
+    },
+    {
+        slug: "vehicle-models",
+        label: "Vehicle Models",
+        description: "All GTA V / FiveM vehicle model names with hashes, organised by category.",
+        icon: Car,
+        color: "from-blue-500/20 to-blue-600/5 border-blue-500/20",
+        iconColor: "text-blue-500",
+        tag: "vehicle-models",
+    },
+    {
+        slug: "vehicle-colours",
+        label: "Vehicle Colours",
+        description: "All vehicle paint colour indices grouped by type — metallic, matte, metals, and unnamed.",
+        icon: PaintBucket,
+        color: "from-orange-500/20 to-orange-600/5 border-orange-500/20",
+        iconColor: "text-orange-500",
+        tag: "vehicle-colours",
+    },
+    {
+        slug: "vehicle-flags",
+        label: "Vehicle Flags",
+        description: "All vehicle flag definitions with descriptions and the build version they were introduced in.",
+        icon: Flag,
+        color: "from-red-500/20 to-red-600/5 border-red-500/20",
+        iconColor: "text-red-500",
+        tag: "vehicle-flags",
     },
 ];
 

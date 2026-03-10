@@ -61,6 +61,7 @@ export function ValidatorContent() {
   const [result, setResult] = useState<ValidationResult | null>(null);
   const [isValidating, setIsValidating] = useState(false);
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   ValidatorRegistry.initialize();
@@ -147,16 +148,25 @@ export function ValidatorContent() {
       <ValidatorSidebar
         collapsed={sidebarCollapsed}
         onToggleCollapse={() => setSidebarCollapsed(!sidebarCollapsed)}
+        mobileOpen={mobileSidebarOpen}
+        onMobileOpenChange={setMobileSidebarOpen}
         validationType={validationType}
         onValidationTypeChange={(type) => {
           setValidationType(type);
           setResult(null);
+          setMobileSidebarOpen(false);
         }}
         validatorConfigs={validatorConfigs}
         placeholders={placeholders}
-        onTemplateSelect={handleLoadTemplate}
+        onTemplateSelect={(type) => {
+          handleLoadTemplate(type);
+          setMobileSidebarOpen(false);
+        }}
         textareaRef={textareaRef}
-        onPlaceholderInsert={handlePlaceholderInsert}
+        onPlaceholderInsert={(p) => {
+          handlePlaceholderInsert(p);
+          setMobileSidebarOpen(false);
+        }}
       />
 
       <main className="flex-1 h-full flex flex-col overflow-hidden">
@@ -168,6 +178,7 @@ export function ValidatorContent() {
           isValidating={isValidating}
           hasInput={jsonInput.trim().length > 0}
           typeLabel={currentTypeLabel}
+          onMobileMenuOpen={() => setMobileSidebarOpen(true)}
         />
 
         <div className="flex-1 flex flex-col lg:flex-row overflow-hidden">

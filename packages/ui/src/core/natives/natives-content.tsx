@@ -73,7 +73,6 @@ export function NativesContent({
   const [expandedNative, setExpandedNative] = useState<string | null>(null);
   const [copiedHash, setCopiedHash] = useState<string | null>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
-  const [forceRefreshKey, setForceRefreshKey] = useState(0);
 
   // Track filter changes to reset pagination
   const prevFilters = useRef({
@@ -117,7 +116,7 @@ export function NativesContent({
   }, [game, environment, category, searchQuery, includeCFX, page]);
 
   // Use the enhanced fetch hook
-  const { data, isPending, error } = useFetch<{
+  const { data, isPending, error, refetch } = useFetch<{
     data: Native[];
     metadata: {
       total: number;
@@ -125,10 +124,10 @@ export function NativesContent({
       offset: number;
       hasMore: boolean;
       environmentStats: {
-        client: number;
-        server: number;
-        shared: number;
-        total: number;
+        client?: number;
+        server?: number;
+        shared?: number;
+        total?: number;
       };
     };
   }>(apiUrl);
@@ -292,12 +291,13 @@ export function NativesContent({
         <ReactMarkdown
           remarkPlugins={[remarkGfm, remarkBreaks]}
           components={{
-            code({ node, inline, className, children, ...props }) {
+            code({ node, className, children, ...props }) {
               const match = /language-(\w+)/.exec(className || "");
-              const language = match ? match[1] : "lua";
+              const language = match ? match[1] : "";
               const code = String(children).replace(/\n$/, "");
+              const isBlock = !!match || (!className && code.includes("\n"));
 
-              if (!inline && (language || code.includes("\n"))) {
+              if (isBlock) {
                 return (
                   <div className="relative group my-2 rounded-md overflow-hidden">
                     <div className="flex items-center justify-between bg-gray-800 px-2 py-1 text-xs font-mono text-gray-300">
@@ -573,7 +573,7 @@ export function NativesContent({
               <div className="flex items-center gap-1.5">
                 <Monitor className="h-3.5 w-3.5 text-blue-500" />
                 <span className="text-xs font-medium">
-                  {totalEnvironmentStats.client.toLocaleString()}
+                  {(totalEnvironmentStats.client ?? 0).toLocaleString()}
                 </span>
                 <span className="text-xs text-muted-foreground">Client</span>
               </div>
@@ -581,7 +581,7 @@ export function NativesContent({
               <div className="flex items-center gap-1.5">
                 <Server className="h-3.5 w-3.5 text-green-500" />
                 <span className="text-xs font-medium">
-                  {totalEnvironmentStats.server.toLocaleString()}
+                  {(totalEnvironmentStats.server ?? 0).toLocaleString()}
                 </span>
                 <span className="text-xs text-muted-foreground">Server</span>
               </div>
@@ -589,7 +589,7 @@ export function NativesContent({
               <div className="flex items-center gap-1.5">
                 <Layers className="h-3.5 w-3.5 text-purple-500" />
                 <span className="text-xs font-medium">
-                  {totalEnvironmentStats.shared.toLocaleString()}
+                  {(totalEnvironmentStats.shared ?? 0).toLocaleString()}
                 </span>
                 <span className="text-xs text-muted-foreground">Shared</span>
               </div>
@@ -631,7 +631,7 @@ export function NativesContent({
               {String(error)}
             </p>
             <Button
-              onClick={() => setForceRefreshKey((prev) => prev + 1)}
+              onClick={refetch}
               variant="outline"
               className="border-red-500/30 text-red-400 hover:bg-red-500/10"
             >

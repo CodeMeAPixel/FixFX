@@ -4,9 +4,6 @@ description: Introduction to common issues and their solutions in CitizenFX.
 icon: "AlertCircle"
 ---
 
-import React from "react";
-import { Accordions, Accordion } from "fumadocs-ui/components/accordion";
-import { Tabs } from "fumadocs-ui/components/tabs";
 import {
   FeatureList,
   CheckList,
@@ -24,13 +21,12 @@ import {
   StepList,
   ComparisonTable,
 } from "@ui/components/mdx-components";
+import { Accordion, Accordions } from "fumadocs-ui/components/accordion";
 
-Welcome to the Common Errors documentation. This section provides comprehensive guides for understanding and resolving various types of errors that may occur in your FiveM server. Whether you're a server owner or a developer, these guides will help you maintain a stable and performant server environment.
+This section provides comprehensive guides for diagnosing and resolving common errors in FiveM servers. Whether you are a server owner or a developer, these references cover the most frequent issues you will encounter across server threads, networking, resources, and database connections.
 
 <Callout type="info">
-  For specific error types and detailed solutions, refer to the individual
-  guides in this section. Each guide provides comprehensive information for both
-  server owners and developers.
+  For specific error types and detailed solutions, refer to the individual guides in this section.
 </Callout>
 
 ## Understanding Error Types
@@ -91,22 +87,41 @@ FiveM errors can be broadly categorized into several types:
 
 ## Available Guides
 
-<Tabs>
-  <div title="Server Issues">
-    <ul>
-      <li><a href="./server-thread-hitch-warning">Server Thread Hitch Warning</a> - Understanding and resolving thread performance issues</li>
-      <li><a href="./network-issues">Network Issues</a> - Troubleshooting network-related problems</li>
-      <li><a href="./state-bag-issues">State Bag Issues</a> - Resolving state synchronization problems</li>
-    </ul>
-  </div>
-
-  <div title="Resource Issues">
-    <ul>
-      <li><a href="./resource-loading">Resource Loading</a> - Fixing resource loading and dependency problems</li>
-      <li><a href="./database-connection">Database Connection</a> - Troubleshooting database connectivity issues</li>
-    </ul>
-  </div>
-</Tabs>
+<QuickLinks
+  links={[
+    {
+      title: "Server Thread Hitch Warning",
+      description: "Understanding and resolving thread performance issues",
+      href: "./server-thread-hitch-warning",
+      icon: "cpu",
+    },
+    {
+      title: "Network Issues",
+      description: "Troubleshooting network-related connection problems",
+      href: "./network-issues",
+      icon: "wifi",
+    },
+    {
+      title: "State Bag Issues",
+      description: "Resolving state synchronization problems",
+      href: "./state-bag-issues",
+      icon: "refresh-cw",
+    },
+    {
+      title: "Resource Loading",
+      description: "Fixing resource loading and dependency conflicts",
+      href: "./resource-loading",
+      icon: "package",
+    },
+    {
+      title: "Database Connection",
+      description: "Troubleshooting database connectivity issues",
+      href: "./database-connection",
+      icon: "database",
+    },
+  ]}
+  columns={2}
+/>
 
 ## Best Practices
 

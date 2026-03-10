@@ -1128,40 +1128,95 @@ Player report system for staff.
 
 ### For Server Owners
 
-- ✅ Configure permissions carefully
-- ✅ Train staff on feature usage
-- ✅ Document allowed vs prohibited actions
-- ✅ Regularly audit staff actions via logs
-- ✅ Test features thoroughly before production
+<CheckList
+  items={[
+    "Configure permissions carefully",
+    "Train staff on feature usage",
+    "Document allowed vs prohibited actions",
+    "Regularly audit staff actions via logs",
+    "Test features thoroughly before deploying to production",
+  ]}
+  variant="check"
+/>
 
 ### For Staff
 
-- ✅ Always follow moderation guidelines
-- ✅ Document actions taken (screenshots/logs)
-- ✅ Use minimal necessary force
-- ✅ Communicate with players before taking action
-- ✅ Never abuse admin powers
+<CheckList
+  items={[
+    "Always follow moderation guidelines",
+    "Document actions taken with screenshots or logs",
+    "Use the minimum necessary intervention",
+    "Communicate with players before taking action",
+    "Never abuse admin powers",
+  ]}
+  variant="check"
+/>
 
 ### For Players
 
-- ✅ Only use features you're permitted to access
-- ✅ Report bugs/issues to staff
-- ✅ Don't request admin permissions unnecessarily
-- ✅ Use /report for rule violations
+<CheckList
+  items={[
+    "Only use features you are permitted to access",
+    "Report bugs and issues to staff",
+    "Do not request admin permissions unnecessarily",
+    "Use /report for rule violations",
+  ]}
+  variant="check"
+/>
 
 ## Feature Requests
 
-Have an idea for vMenu?
+Have an idea for vMenu? Reach out through the official channels:
 
-- 💬 Join [vMenu Discord](https://vespura.com/vmenu/discord)
-- 📝 Open [GitHub Issue](https://github.com/TomGrobbe/vMenu/issues)
-- 🌐 Post on [CFX Forums](https://forum.cfx.re/t/vmenu)
+<QuickLinks
+  links={[
+    {
+      title: "vMenu Discord",
+      description: "Join the community to discuss features and get support",
+      href: "https://vespura.com/vmenu/discord",
+      icon: "message-circle",
+    },
+    {
+      title: "GitHub Issues",
+      description: "Open an issue to report bugs or suggest improvements",
+      href: "https://github.com/TomGrobbe/vMenu/issues",
+      icon: "github",
+    },
+    {
+      title: "CFX Forums",
+      description: "Post on the official community forums",
+      href: "https://forum.cfx.re/t/vmenu",
+      icon: "globe",
+    },
+  ]}
+  columns={3}
+/>
 
 ## Next Steps
 
-- [Configure Permissions](/docs/vmenu/permissions) - Set up access control
-- [Troubleshooting](/docs/vmenu/troubleshooting) - Solve common issues
-- [Configuration](/docs/vmenu/configuration) - Customize vMenu settings
+<QuickLinks
+  links={[
+    {
+      title: "Configure Permissions",
+      description: "Set up access control for your server",
+      href: "/docs/vmenu/permissions",
+      icon: "shield",
+    },
+    {
+      title: "Troubleshooting",
+      description: "Solve common vMenu issues",
+      href: "/docs/vmenu/troubleshooting",
+      icon: "wrench",
+    },
+    {
+      title: "Configuration",
+      description: "Customize vMenu settings for your server",
+      href: "/docs/vmenu/configuration",
+      icon: "settings",
+    },
+  ]}
+  columns={3}
+/>
 
 <Callout type="success">
   **Explore vMenu**: Now that you understand all features, configure your server

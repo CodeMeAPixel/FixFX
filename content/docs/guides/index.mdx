@@ -62,53 +62,69 @@ If you're new to FiveM server management, follow this recommended path:
 
 ### Server Setup & Configuration
 
-<Cards>
-  <Card
-    title="Database Setup"
-    href="/docs/guides/database-setup"
-    description="Complete guide to installing and configuring MySQL/MariaDB for your FiveM server. Includes Windows, Linux, and Docker installations."
-  />
-  <Card
-    title="Server Configuration"
-    href="./server-configuration"
-    description="Comprehensive server.cfg setup, performance optimization, and advanced configuration options for production servers."
-  />
-  <Card
-    title="Server Artifacts"
-    href="/docs/guides/server-artifacts"
-    description="How to update FiveM server artifacts manually and automatically. Includes update scripts and rollback procedures."
-  />
-</Cards>
+<QuickLinks
+  links={[
+    {
+      title: "Database Setup",
+      description: "Complete guide to installing and configuring MySQL/MariaDB for your FiveM server. Includes Windows, Linux, and Docker installations.",
+      href: "/docs/guides/database-setup",
+      icon: "database",
+    },
+    {
+      title: "Server Configuration",
+      description: "Comprehensive server.cfg setup, performance optimization, and advanced configuration options for production servers.",
+      href: "./server-configuration",
+      icon: "settings",
+    },
+    {
+      title: "Server Artifacts",
+      description: "How to update FiveM server artifacts manually and automatically. Includes update scripts and rollback procedures.",
+      href: "/docs/guides/server-artifacts",
+      icon: "download",
+    },
+  ]}
+  columns={3}
+/>
 
 ### Resource Management
 
-<Cards>
-  <Card
-    title="Resource Installation"
-    href="/docs/guides/resource-installation"
-    description="Step-by-step guide to installing, configuring, and managing FiveM resources. Covers dependencies and troubleshooting."
-  />
-  <Card
-    title="Database Tools"
-    href="/docs/guides/database-tools"
-    description="Essential database management tools and utilities for maintaining your FiveM server's data integrity."
-  />
-</Cards>
+<QuickLinks
+  links={[
+    {
+      title: "Resource Installation",
+      description: "Step-by-step guide to installing, configuring, and managing FiveM resources. Covers dependencies and troubleshooting.",
+      href: "/docs/guides/resource-installation",
+      icon: "package",
+    },
+    {
+      title: "Database Tools",
+      description: "Essential database management tools and utilities for maintaining your FiveM server's data integrity.",
+      href: "/docs/guides/database-tools",
+      icon: "tool",
+    },
+  ]}
+  columns={2}
+/>
 
 ### Security & Maintenance
 
-<Cards>
-  <Card
-    title="Security & Permissions"
-    href="/docs/guides/security-permissions"
-    description="Complete security hardening guide including anti-cheat, DDoS protection, and advanced permission systems."
-  />
-  <Card
-    title="Backup & Recovery"
-    href="/docs/guides/backup-recovery"
-    description="Comprehensive backup strategies, automated solutions, and disaster recovery procedures for your server data."
-  />
-</Cards>
+<QuickLinks
+  links={[
+    {
+      title: "Security & Permissions",
+      description: "Complete security hardening guide including anti-cheat, DDoS protection, and advanced permission systems.",
+      href: "/docs/guides/security-permissions",
+      icon: "shield",
+    },
+    {
+      title: "Backup & Recovery",
+      description: "Comprehensive backup strategies, automated solutions, and disaster recovery procedures for your server data.",
+      href: "/docs/guides/backup-recovery",
+      icon: "archive",
+    },
+  ]}
+  columns={2}
+/>
 
 ## What You'll Learn
 
@@ -144,10 +160,10 @@ Before diving into these guides, ensure you have:
 
 <CheckList
   items={[
-    "Basic Command Line Knowledge - Comfort with terminal/command prompt",
-    "Server Access - Root/administrator access to your server",
-    "FiveM License - Valid FiveM server license key",
-    "Domain/IP - Server hostname or IP address",
+    "Comfortable with terminal or command prompt usage",
+    "Root or administrator access to your server",
+    "Valid FiveM server license key",
+    "Server hostname or IP address",
   ]}
   variant="check"
 />
@@ -171,10 +187,10 @@ Most guides will reference these commonly used tools:
 
 <CheckList
   items={[
-    "Start Simple - Begin with basic configurations and gradually add complexity",
-    "Test Everything - Always test in development before applying to production",
-    "Keep Backups - Implement backup strategies early",
-    "Monitor Performance - Regular monitoring helps identify issues early",
+    "Start with basic configurations and gradually add complexity",
+    "Always test changes in a development environment before production",
+    "Implement backup strategies before your server goes live",
+    "Monitor performance regularly to catch problems early",
   ]}
   variant="check"
   columns={2}
@@ -184,7 +200,7 @@ Most guides will reference these commonly used tools:
 
 Keep your server artifacts, resources, and security measures up to date.
 
-## 🆘 Getting Help
+## Getting Help
 
 If you encounter issues while following these guides:
 
@@ -194,7 +210,7 @@ If you encounter issues while following these guides:
 4. **Verify Configurations** - Double-check all configuration files
 5. **Test in Isolation** - Try to reproduce issues in a test environment
 
-## 📝 Contributing
+## Contributing
 
 These guides are continuously improved based on community feedback and new developments in the FiveM ecosystem. If you find errors or have suggestions for improvements, contributions are welcome.
 

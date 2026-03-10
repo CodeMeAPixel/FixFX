@@ -1,40 +1,179 @@
-"use client";
+﻿"use client";
 
 import * as React from "react";
 import { cn } from "@utils/functions/cn";
 import { Button } from "./button";
 import { ScrollArea } from "./scroll-area";
+import { Sheet, SheetContent, SheetTitle } from "./sheet";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "./tabs";
+import { Input } from "./input";
+import { Label } from "./label";
+import { Slider } from "./slider";
+import { Badge } from "./badge";
 import {
-  Home,
-  MessageSquare,
-  Settings,
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "./select";
+import { NAV_LINKS, DISCORD_LINK, GITHUB_LINK } from "@utils/constants/link";
+import {
   History,
-  Code,
   Plus,
-  Zap,
-  Bot,
+  MessagesSquare,
+  Settings,
+  Eye,
+  EyeOff,
+  KeyRound,
+  Check,
+  Trash2,
   X,
   Github,
-  MessagesSquare,
-  Sparkles,
 } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState, useEffect, useRef } from "react";
-import { Label } from "./label";
-import { Slider } from "./slider";
-import { Sheet, SheetContent } from "./sheet";
-import { Tabs, TabsList, TabsTrigger } from "./tabs";
-import { ModelCard } from "./model-card";
-import { NAV_LINKS, DISCORD_LINK, GITHUB_LINK } from "@utils/constants/link";
+import { useState, useEffect } from "react";
+import { FixFXIcon } from "../icons";
 import { FaDiscord } from "react-icons/fa";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "./tooltip";
-import { motion } from "motion/react";
+
+const MODELS = [
+  { value: "gpt-4o", label: "GPT-4o", group: "OpenAI", isNew: true },
+  { value: "gpt-4o-mini", label: "GPT-4o Mini", group: "OpenAI" },
+  { value: "gpt-4-turbo", label: "GPT-4 Turbo", group: "OpenAI" },
+  { value: "gpt-3.5-turbo", label: "GPT-3.5 Turbo", group: "OpenAI" },
+  {
+    value: "claude-3-5-sonnet",
+    label: "Claude 3.5 Sonnet",
+    group: "Anthropic",
+    byok: "anthropic",
+    isNew: true,
+  },
+  {
+    value: "claude-3-haiku",
+    label: "Claude 3 Haiku",
+    group: "Anthropic",
+    byok: "anthropic",
+  },
+  {
+    value: "gemini-2.0-flash",
+    label: "Gemini 2.0 Flash",
+    group: "Google",
+    byok: "google",
+    isNew: true,
+  },
+  {
+    value: "gemini-1.5-flash",
+    label: "Gemini 1.5 Flash",
+    group: "Google",
+    byok: "google",
+  },
+];
+
+function ByokKeyInput({
+  provider,
+  storageKey,
+  placeholder,
+  onKeyChange,
+}: {
+  provider: string;
+  storageKey: string;
+  placeholder: string;
+  onKeyChange: () => void;
+}) {
+  const [key, setKey] = useState("");
+  const [saved, setSaved] = useState(false);
+  const [visible, setVisible] = useState(false);
+
+  useEffect(() => {
+    const stored = localStorage.getItem(storageKey);
+    if (stored) {
+      setKey(stored);
+      setSaved(true);
+    }
+  }, [storageKey]);
+
+  const handleSave = () => {
+    const trimmed = key.trim();
+    if (!trimmed) return;
+    localStorage.setItem(storageKey, trimmed);
+    setSaved(true);
+    onKeyChange();
+  };
+
+  const handleClear = () => {
+    localStorage.removeItem(storageKey);
+    setKey("");
+    setSaved(false);
+    onKeyChange();
+  };
+
+  return (
+    <div className="space-y-1.5">
+      <div className="flex items-center justify-between">
+        <span className="text-xs font-medium text-fd-foreground">
+          {provider}
+        </span>
+        {saved && (
+          <Badge
+            variant="outline"
+            className="text-[10px] h-4 px-1.5 border-emerald-500/30 text-emerald-500 bg-emerald-500/5"
+          >
+            Active
+          </Badge>
+        )}
+      </div>
+      <div className="relative">
+        <Input
+          type={visible ? "text" : "password"}
+          value={key}
+          onChange={(e) => {
+            setKey(e.target.value);
+            setSaved(false);
+          }}
+          onKeyDown={(e) => e.key === "Enter" && handleSave()}
+          placeholder={placeholder}
+          className="text-xs h-8 pr-16 bg-fd-background border-fd-border focus-visible:ring-[#5865F2]/30"
+        />
+        <div className="absolute right-1 top-1/2 -translate-y-1/2 flex items-center gap-0.5">
+          <button
+            type="button"
+            onClick={() => setVisible(!visible)}
+            className="h-6 w-6 flex items-center justify-center rounded text-fd-muted-foreground hover:text-fd-foreground hover:bg-fd-accent transition-colors"
+          >
+            {visible ? (
+              <EyeOff className="h-3 w-3" />
+            ) : (
+              <Eye className="h-3 w-3" />
+            )}
+          </button>
+          {saved ? (
+            <button
+              type="button"
+              onClick={handleClear}
+              className="h-6 w-6 flex items-center justify-center rounded text-red-400 hover:text-red-300 hover:bg-red-500/10 transition-colors"
+              title="Remove key"
+            >
+              <Trash2 className="h-3 w-3" />
+            </button>
+          ) : (
+            <button
+              type="button"
+              onClick={handleSave}
+              disabled={!key.trim()}
+              className="h-6 w-6 flex items-center justify-center rounded text-[#5865F2] hover:bg-[#5865F2]/10 disabled:opacity-40 disabled:cursor-not-allowed transition-colors"
+              title="Save key"
+            >
+              <Check className="h-3 w-3" />
+            </button>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
 
 interface SavedChat {
   id: string;
@@ -68,22 +207,28 @@ export function MobileChatDrawer({
   onNewChat,
 }: MobileChatDrawerProps) {
   const pathname = usePathname();
-  const [activeTab, setActiveTab] = useState<
-    "navigation" | "chats" | "settings"
-  >("navigation");
   const [recentChats, setRecentChats] = useState<SavedChat[]>([]);
   const [activeChat, setActiveChat] = useState<string | null>(null);
-  const drawerRef = useRef<HTMLDivElement>(null);
+  const [byokKeys, setByokKeys] = useState({ anthropic: false, google: false });
 
-  // Initialize active chat from localStorage
+  const refreshByok = () => {
+    setByokKeys({
+      anthropic: !!localStorage.getItem("fixfx-byok-anthropic"),
+      google: !!localStorage.getItem("fixfx-byok-google"),
+    });
+  };
+
   useEffect(() => {
-    const currentChatId = localStorage.getItem("fixfx-current-chat");
-    if (currentChatId) {
-      setActiveChat(currentChatId);
-    }
+    refreshByok();
+    window.addEventListener("byokChanged", refreshByok);
+    return () => window.removeEventListener("byokChanged", refreshByok);
   }, []);
 
-  // Load recent chats from localStorage
+  useEffect(() => {
+    const currentChatId = localStorage.getItem("fixfx-current-chat");
+    if (currentChatId) setActiveChat(currentChatId);
+  }, []);
+
   useEffect(() => {
     const loadChats = () => {
       try {
@@ -92,125 +237,121 @@ export function MobileChatDrawer({
           const savedChats: SavedChat[] = JSON.parse(savedChatsStr);
           setRecentChats(savedChats);
         }
-      } catch (error) {
-        console.error("Error loading saved chats:", error);
+      } catch {
+        // ignore parse errors
       }
     };
 
-    if (isOpen) {
-      loadChats();
-    }
+    if (isOpen) loadChats();
 
-    // Also load when we detect chat updates
     const handleChatsUpdated = () => {
       if (isOpen) loadChats();
     };
-
     window.addEventListener("chatsUpdated", handleChatsUpdated);
     window.addEventListener("activeChatChanged", handleChatsUpdated);
-
     return () => {
       window.removeEventListener("chatsUpdated", handleChatsUpdated);
       window.removeEventListener("activeChatChanged", handleChatsUpdated);
     };
   }, [isOpen]);
 
-  // Handle selecting a chat
   const handleChatClick = (chat: SavedChat) => {
     localStorage.setItem("fixfx-current-chat", chat.id);
     setActiveChat(chat.id);
     onLoadChat(chat);
+    onClose();
   };
 
-  // Handle creating a new chat
   const handleNewChat = () => {
     localStorage.removeItem("fixfx-current-chat");
     setActiveChat(null);
     onNewChat();
+    onClose();
   };
 
-  useEffect(() => {
-    if (!isOpen) return;
-
-    const handleEscape = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        onClose();
-      }
-    };
-
-    document.addEventListener("keydown", handleEscape);
-    return () => {
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen, onClose]);
+  const openAIModels = MODELS.filter((m) => m.group === "OpenAI");
+  const anthropicModels = MODELS.filter((m) => m.group === "Anthropic");
+  const googleModels = MODELS.filter((m) => m.group === "Google");
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => !open && onClose()}>
       <SheetContent
         side="left"
-        className="w-full max-w-full sm:max-w-md border-r border-[#5865F2]/10 p-0 bg-fd-background/95 backdrop-blur-xl pt-16"
+        className="w-80 sm:w-80 p-0 bg-fd-background border-r border-fd-border flex flex-col"
       >
-        <div className="flex flex-col h-full">
-          <div className="flex items-center justify-between p-4 border-b border-[#5865F2]/10">
-            <Tabs
-              value={activeTab}
-              onValueChange={(value) => setActiveTab(value as any)}
-            >
-              <TabsList className="bg-[#0F0B2B]/60 grid grid-cols-3 h-10 rounded-xl p-1">
-                <TabsTrigger
-                  value="navigation"
-                  className="rounded-lg text-xs data-[state=active]:bg-gradient-to-br data-[state=active]:from-[#5865F2] data-[state=active]:to-[#4752C4] data-[state=active]:text-white data-[state=active]:shadow-md"
-                >
-                  Navigation
-                </TabsTrigger>
-                <TabsTrigger
-                  value="chats"
-                  className="rounded-lg text-xs data-[state=active]:bg-gradient-to-br data-[state=active]:from-[#5865F2] data-[state=active]:to-[#4752C4] data-[state=active]:text-white data-[state=active]:shadow-md"
-                >
-                  Chats
-                </TabsTrigger>
-                <TabsTrigger
-                  value="settings"
-                  className="rounded-lg text-xs data-[state=active]:bg-gradient-to-br data-[state=active]:from-[#5865F2] data-[state=active]:to-[#4752C4] data-[state=active]:text-white data-[state=active]:shadow-md"
-                >
-                  Settings
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
+        <SheetTitle className="sr-only">Fixie AI Navigation</SheetTitle>
 
-            <Button
-              variant="ghost"
-              size="icon"
-              onClick={onClose}
-              className="ml-2 hover:bg-[#5865F2]/10"
-            >
-              <X className="h-4 w-4" />
-            </Button>
+        {/* Header */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-fd-border shrink-0">
+          <div className="flex items-center gap-2">
+            <FixFXIcon className="h-5 w-5 text-[#5865F2]" />
+            <span className="text-sm font-semibold text-fd-foreground">
+              Fixie AI
+            </span>
+          </div>
+          <button
+            type="button"
+            onClick={onClose}
+            className="h-7 w-7 flex items-center justify-center rounded-md text-fd-muted-foreground hover:text-fd-foreground hover:bg-fd-accent transition-colors"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        {/* New Chat button */}
+        <div className="px-3 py-2 shrink-0">
+          <Button
+            size="sm"
+            className="w-full h-8 gap-2 text-xs bg-[#5865F2] hover:bg-[#5865F2]/90 text-white"
+            onClick={handleNewChat}
+          >
+            <Plus className="h-3.5 w-3.5" />
+            New Chat
+          </Button>
+        </div>
+
+        {/* Tabs */}
+        <Tabs defaultValue="chats" className="flex-1 flex flex-col min-h-0">
+          <div className="px-3 shrink-0">
+            <TabsList className="w-full h-8">
+              <TabsTrigger
+                value="chats"
+                className="flex-1 text-xs gap-1.5 h-6"
+              >
+                <MessagesSquare className="h-3 w-3" />
+                Chats
+              </TabsTrigger>
+              <TabsTrigger
+                value="settings"
+                className="flex-1 text-xs gap-1.5 h-6"
+              >
+                <Settings className="h-3 w-3" />
+                Settings
+              </TabsTrigger>
+            </TabsList>
           </div>
 
-          <ScrollArea className="flex-1 p-4">
-            {activeTab === "navigation" && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-1"
-              >
-                {NAV_LINKS.map((item, index) => {
-                  const Icon = item.icon;
-                  return (
-                    <motion.div
-                      key={item.href}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: index * 0.05 }}
-                    >
+          <TabsContent value="chats" className="flex-1 mt-0 min-h-0">
+            <ScrollArea className="h-full">
+              <div className="px-3 pb-4 space-y-4">
+                {/* Navigation */}
+                <div className="space-y-0.5">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-fd-muted-foreground px-1 pb-1">
+                    Navigation
+                  </p>
+                  {NAV_LINKS.map((item) => {
+                    const Icon = item.icon;
+                    const isActive = pathname === item.href;
+                    return (
                       <Button
+                        key={item.href}
                         variant="ghost"
+                        size="sm"
                         className={cn(
-                          "w-full justify-start rounded-lg transition-all duration-200",
-                          pathname === item.href
-                            ? "bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 text-[#5865F2] border-l-2 border-[#5865F2]"
-                            : "hover:bg-[#5865F2]/10",
+                          "h-8 w-full justify-start gap-2 text-xs font-normal",
+                          isActive
+                            ? "bg-[#5865F2]/10 text-[#5865F2]"
+                            : "text-fd-foreground hover:bg-fd-accent",
                         )}
                         asChild
                         onClick={onClose}
@@ -220,288 +361,231 @@ export function MobileChatDrawer({
                             href={item.href}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="flex items-center"
                           >
-                            <Icon className="mr-2 h-4 w-4" />
+                            <Icon className="h-3.5 w-3.5 shrink-0" />
                             {item.name}
                           </a>
                         ) : (
-                          <Link href={item.href} className="flex items-center">
-                            <Icon className="mr-2 h-4 w-4" />
+                          <Link href={item.href}>
+                            <Icon className="h-3.5 w-3.5 shrink-0" />
                             {item.name}
                           </Link>
                         )}
                       </Button>
-                    </motion.div>
-                  );
-                })}
-              </motion.div>
-            )}
+                    );
+                  })}
+                </div>
 
-            {activeTab === "chats" && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-4"
-              >
-                <Button
-                  variant="outline"
-                  className="w-full justify-center rounded-xl border-[#5865F2]/20 hover:bg-[#5865F2]/10 hover:border-[#5865F2]/30"
-                  onClick={handleNewChat}
-                >
-                  <Plus className="h-4 w-4 mr-2 text-[#5865F2]" />
-                  New Chat
-                </Button>
-
-                <div className="space-y-1">
-                  <h4 className="text-xs font-medium uppercase tracking-wider text-muted-foreground px-1 mb-2">
-                    Recent Conversations
-                  </h4>
+                {/* Recent Chats */}
+                <div className="space-y-0.5">
+                  <p className="text-[10px] font-medium uppercase tracking-wider text-fd-muted-foreground px-1 pb-1">
+                    Recent Chats
+                  </p>
                   {recentChats.length > 0 ? (
-                    recentChats.map((chat, index) => {
-                      const isActive = activeChat === chat.id;
-                      return (
-                        <motion.div
-                          key={chat.id}
-                          initial={{ opacity: 0, x: -10 }}
-                          animate={{ opacity: 1, x: 0 }}
-                          transition={{ delay: index * 0.03 }}
-                        >
-                          <Button
-                            variant="ghost"
-                            className={cn(
-                              "w-full justify-start truncate rounded-lg transition-all duration-200",
-                              isActive
-                                ? "bg-gradient-to-r from-[#5865F2]/20 to-[#5865F2]/5 border-l-2 border-[#5865F2]"
-                                : "hover:bg-[#5865F2]/10",
-                            )}
-                            onClick={() => handleChatClick(chat)}
-                          >
-                            <History
-                              className={cn(
-                                "mr-2 h-4 w-4 shrink-0",
-                                isActive && "text-[#5865F2]",
-                              )}
-                            />
-                            <span className="truncate">{chat.title}</span>
-                          </Button>
-                        </motion.div>
-                      );
-                    })
+                    recentChats.map((chat) => (
+                      <Button
+                        key={chat.id}
+                        variant="ghost"
+                        size="sm"
+                        className={cn(
+                          "h-8 w-full justify-start gap-2 text-xs font-normal",
+                          activeChat === chat.id
+                            ? "bg-[#5865F2]/10 text-[#5865F2]"
+                            : "text-fd-foreground hover:bg-fd-accent",
+                        )}
+                        onClick={() => handleChatClick(chat)}
+                      >
+                        <History className="h-3.5 w-3.5 shrink-0" />
+                        <span className="truncate">{chat.title}</span>
+                      </Button>
+                    ))
                   ) : (
-                    <div className="text-center py-8">
-                      <MessagesSquare className="h-8 w-8 text-muted-foreground/30 mx-auto mb-2" />
-                      <p className="text-sm text-muted-foreground">
-                        No recent chats
-                      </p>
+                    <div className="flex flex-col items-center gap-1.5 py-6 text-fd-muted-foreground">
+                      <MessagesSquare className="h-6 w-6 opacity-40" />
+                      <span className="text-xs">No recent chats</span>
                     </div>
                   )}
                 </div>
-              </motion.div>
-            )}
+              </div>
+            </ScrollArea>
+          </TabsContent>
 
-            {activeTab === "settings" && (
-              <motion.div
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="space-y-6"
-              >
-                <div className="space-y-3">
-                  <div className="flex items-center gap-2 mb-2">
-                    <Sparkles className="h-4 w-4 text-[#5865F2]" />
-                    <Label
-                      htmlFor="model-mobile"
-                      className="text-sm font-medium"
-                    >
-                      Model Selection
-                    </Label>
-                  </div>
-                  <p className="text-xs text-fd-muted-foreground">
-                    Choose the AI model for your chat.
-                  </p>
-
-                  {/* OpenAI Models */}
-                  <div className="space-y-2">
-                    <span className="text-[10px] font-medium text-fd-muted-foreground uppercase tracking-widest">
-                      OpenAI
-                    </span>
-                    <ModelCard
-                      model="gpt-4o"
-                      name="GPT-4o"
-                      description="Most capable model"
-                      provider="OpenAI"
-                      icon={<Zap className="h-4 w-4" />}
-                      color="#10B981"
-                      isSelected={model === "gpt-4o"}
-                      onClick={() => onModelChange("gpt-4o")}
-                      isNew
-                    />
-                    <ModelCard
-                      model="gpt-4o-mini"
-                      name="GPT-4o Mini"
-                      description="Balanced performance"
-                      provider="OpenAI"
-                      icon={<Zap className="h-4 w-4" />}
-                      color="#5865F2"
-                      isSelected={model === "gpt-4o-mini"}
-                      onClick={() => onModelChange("gpt-4o-mini")}
-                    />
-                    <ModelCard
-                      model="gpt-4-turbo"
-                      name="GPT-4 Turbo"
-                      description="Fast and powerful"
-                      provider="OpenAI"
-                      icon={<Zap className="h-4 w-4" />}
-                      color="#8B5CF6"
-                      isSelected={model === "gpt-4-turbo"}
-                      onClick={() => onModelChange("gpt-4-turbo")}
-                      isNew
-                    />
-                    <ModelCard
-                      model="gpt-3.5-turbo"
-                      name="GPT-3.5 Turbo"
-                      description="Fast for simple queries"
-                      provider="OpenAI"
-                      icon={<Bot className="h-4 w-4" />}
-                      color="#6366F1"
-                      isSelected={model === "gpt-3.5-turbo"}
-                      onClick={() => onModelChange("gpt-3.5-turbo")}
-                      isNew
-                    />
-                  </div>
-
-                  {/* Coming Soon */}
-                  <div className="space-y-2 pt-2">
-                    <span className="text-[10px] font-medium text-fd-muted-foreground uppercase tracking-widest">
-                      Coming Soon
-                    </span>
-                    <ModelCard
-                      model="gemini-1.5-flash"
-                      name="Gemini 1.5 Flash"
-                      description="Fast responses"
-                      provider="Google"
-                      icon={<Bot className="h-4 w-4" />}
-                      color="#34A853"
-                      isSelected={model === "gemini-1.5-flash"}
-                      onClick={() => onModelChange("gemini-1.5-flash")}
-                      disabled
-                    />
-                    <ModelCard
-                      model="claude-3-haiku"
-                      name="Claude 3 Haiku"
-                      description="Creative understanding"
-                      provider="Anthropic"
-                      icon={<Code className="h-4 w-4" />}
-                      color="#FF6B6C"
-                      isSelected={model === "claude-3-haiku"}
-                      onClick={() => onModelChange("claude-3-haiku")}
-                      disabled
-                    />
-                  </div>
+          <TabsContent value="settings" className="flex-1 mt-0 min-h-0">
+            <ScrollArea className="h-full">
+              <div className="px-3 pb-4 space-y-5">
+                {/* Model Select */}
+                <div className="space-y-1.5">
+                  <Label className="text-xs text-fd-foreground">Model</Label>
+                  <Select value={model} onValueChange={onModelChange}>
+                    <SelectTrigger className="h-8 text-xs bg-fd-background border-fd-border focus:ring-[#5865F2]/30">
+                      <SelectValue placeholder="Select model" />
+                    </SelectTrigger>
+                    <SelectContent>
+                      <SelectGroup>
+                        <SelectLabel className="text-[10px] uppercase tracking-wider text-fd-muted-foreground">
+                          OpenAI
+                        </SelectLabel>
+                        {openAIModels.map((m) => (
+                          <SelectItem
+                            key={m.value}
+                            value={m.value}
+                            className="text-xs"
+                          >
+                            <span className="flex items-center gap-2">
+                              {m.label}
+                              {m.isNew && (
+                                <Badge className="text-[9px] h-3.5 px-1 bg-[#5865F2]/10 text-[#5865F2] border-[#5865F2]/20">
+                                  New
+                                </Badge>
+                              )}
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel className="text-[10px] uppercase tracking-wider text-fd-muted-foreground">
+                          Anthropic
+                        </SelectLabel>
+                        {anthropicModels.map((m) => (
+                          <SelectItem
+                            key={m.value}
+                            value={m.value}
+                            disabled={!byokKeys.anthropic}
+                            className="text-xs"
+                          >
+                            <span className="flex items-center gap-2">
+                              {m.label}
+                              {m.isNew && (
+                                <Badge className="text-[9px] h-3.5 px-1 bg-[#5865F2]/10 text-[#5865F2] border-[#5865F2]/20">
+                                  New
+                                </Badge>
+                              )}
+                              {!byokKeys.anthropic && (
+                                <Badge
+                                  variant="outline"
+                                  className="text-[9px] h-3.5 px-1"
+                                >
+                                  Key required
+                                </Badge>
+                              )}
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                      <SelectGroup>
+                        <SelectLabel className="text-[10px] uppercase tracking-wider text-fd-muted-foreground">
+                          Google
+                        </SelectLabel>
+                        {googleModels.map((m) => (
+                          <SelectItem
+                            key={m.value}
+                            value={m.value}
+                            disabled={!byokKeys.google}
+                            className="text-xs"
+                          >
+                            <span className="flex items-center gap-2">
+                              {m.label}
+                              {m.isNew && (
+                                <Badge className="text-[9px] h-3.5 px-1 bg-[#5865F2]/10 text-[#5865F2] border-[#5865F2]/20">
+                                  New
+                                </Badge>
+                              )}
+                              {!byokKeys.google && (
+                                <Badge
+                                  variant="outline"
+                                  className="text-[9px] h-3.5 px-1"
+                                >
+                                  Key required
+                                </Badge>
+                              )}
+                            </span>
+                          </SelectItem>
+                        ))}
+                      </SelectGroup>
+                    </SelectContent>
+                  </Select>
                 </div>
 
-                <div className="space-y-3 bg-gradient-to-br from-[#0F0B2B]/60 to-[#0F0B2B]/30 p-4 rounded-xl border border-[#5865F2]/10">
+                {/* Temperature Slider */}
+                <div className="space-y-2">
                   <div className="flex items-center justify-between">
-                    <Label htmlFor="temperature" className="text-white text-sm">
+                    <Label className="text-xs text-fd-foreground">
                       Temperature
                     </Label>
-                    <span className="text-xs font-medium text-[#5865F2] px-2 py-1 rounded-lg bg-[#5865F2]/10">
+                    <span className="text-[10px] font-medium text-[#5865F2] tabular-nums">
                       {temperature.toFixed(1)}
                     </span>
                   </div>
-                  <div className="pt-1">
-                    <div className="flex items-center justify-between text-[10px] text-muted-foreground mb-2">
-                      <span>Precise</span>
-                      <span>Creative</span>
-                    </div>
-                    <Slider
-                      id="temperature-mobile"
-                      min={0}
-                      max={1}
-                      step={0.1}
-                      value={[temperature]}
-                      onValueChange={([value]) => onTemperatureChange(value)}
-                    />
+                  <Slider
+                    min={0}
+                    max={1}
+                    step={0.1}
+                    value={[temperature]}
+                    onValueChange={([value]) => onTemperatureChange(value)}
+                    className="[&_[role=slider]]:h-3.5 [&_[role=slider]]:w-3.5"
+                  />
+                  <div className="flex justify-between text-[10px] text-fd-muted-foreground">
+                    <span>Precise</span>
+                    <span>Creative</span>
                   </div>
-                  <p className="text-xs text-muted-foreground leading-relaxed">
-                    {temperature < 0.4
-                      ? "Lower values generate more focused, deterministic responses."
-                      : temperature > 0.7
-                        ? "Higher values generate more creative, varied responses."
-                        : "Balanced between deterministic and creative responses."}
-                  </p>
                 </div>
 
-                <div className="pt-4 border-t border-[#5865F2]/10 space-y-2">
-                  <h4 className="text-sm font-medium text-white">
-                    Privacy Info
-                  </h4>
-                  <div className="text-xs text-muted-foreground leading-relaxed">
-                    <p className="mb-1">
-                      Chat history is stored only in your browser's local
-                      storage.
+                {/* API Keys (BYOK) */}
+                <div className="space-y-3 border-t border-fd-border/50 pt-4">
+                  <div className="flex items-center gap-1.5 px-1">
+                    <KeyRound className="h-3.5 w-3.5 text-fd-muted-foreground" />
+                    <p className="text-[10px] font-medium uppercase tracking-wider text-fd-muted-foreground">
+                      API Keys
                     </p>
-                    <p>Clear browser storage to remove your chat history.</p>
                   </div>
+                  <ByokKeyInput
+                    provider="Anthropic"
+                    storageKey="fixfx-byok-anthropic"
+                    placeholder="sk-ant-..."
+                    onKeyChange={() => {
+                      refreshByok();
+                      window.dispatchEvent(new CustomEvent("byokChanged"));
+                    }}
+                  />
+                  <ByokKeyInput
+                    provider="Google"
+                    storageKey="fixfx-byok-google"
+                    placeholder="AIzaSy..."
+                    onKeyChange={() => {
+                      refreshByok();
+                      window.dispatchEvent(new CustomEvent("byokChanged"));
+                    }}
+                  />
                 </div>
-              </motion.div>
-            )}
-          </ScrollArea>
+              </div>
+            </ScrollArea>
+          </TabsContent>
+        </Tabs>
 
-          {/* Footer with GitHub and Discord links */}
-          <div className="border-t border-[#5865F2]/10 p-3 flex items-center justify-center gap-2">
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-fd-background/80 border-[#5865F2]/10 hover:bg-[#5865F2]/10 hover:text-[#5865F2] hover:border-[#5865F2]/20 flex-1 rounded-lg transition-all duration-200"
-                    asChild
-                  >
-                    <a
-                      href={GITHUB_LINK}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center"
-                    >
-                      <Github className="h-4 w-4 mr-2" />
-                      <span className="text-xs">GitHub</span>
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center">
-                  <p>GitHub</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    variant="outline"
-                    size="sm"
-                    className="bg-fd-background/80 border-[#5865F2]/10 hover:bg-[#5865F2]/10 hover:text-[#5865F2] hover:border-[#5865F2]/20 flex-1 rounded-lg transition-all duration-200"
-                    asChild
-                  >
-                    <a
-                      href={DISCORD_LINK}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="flex items-center justify-center"
-                    >
-                      <FaDiscord className="h-4 w-4 mr-2" />
-                      <span className="text-xs">Discord</span>
-                    </a>
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top" align="center">
-                  <p>Discord</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+        {/* Footer */}
+        <div className="flex items-center gap-2 px-3 py-2 border-t border-fd-border shrink-0">
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 flex-1 gap-2 text-xs text-fd-muted-foreground hover:text-fd-foreground hover:bg-fd-accent"
+            asChild
+          >
+            <a href={GITHUB_LINK} target="_blank" rel="noopener noreferrer">
+              <Github className="h-3.5 w-3.5" />
+              GitHub
+            </a>
+          </Button>
+          <Button
+            variant="ghost"
+            size="sm"
+            className="h-8 flex-1 gap-2 text-xs text-fd-muted-foreground hover:text-[#5865F2] hover:bg-[#5865F2]/10"
+            asChild
+          >
+            <a href={DISCORD_LINK} target="_blank" rel="noopener noreferrer">
+              <FaDiscord className="h-3.5 w-3.5" />
+              Discord
+            </a>
+          </Button>
         </div>
       </SheetContent>
     </Sheet>

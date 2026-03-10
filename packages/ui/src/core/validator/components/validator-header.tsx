@@ -1,10 +1,10 @@
 "use client";
 
-import { FC, useMemo } from "react";
+import { FC } from "react";
 import { Button } from "@ui/components/button";
 import { Badge } from "@ui/components/badge";
 import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "@ui/components/tooltip";
-import { Code2, Play, Sparkles, Eraser } from "lucide-react";
+import { Play, Sparkles, Eraser, Menu, Loader2 } from "lucide-react";
 import { ValidatorType } from "../types";
 
 interface ValidatorHeaderProps {
@@ -15,84 +15,90 @@ interface ValidatorHeaderProps {
     isValidating: boolean;
     hasInput: boolean;
     typeLabel: string;
+    onMobileMenuOpen: () => void;
 }
 
 export const ValidatorHeader: FC<ValidatorHeaderProps> = ({
-    validationType,
+    validationType: _validationType,
     onValidate,
     onFormat,
     onClear,
     isValidating,
     hasInput,
     typeLabel,
+    onMobileMenuOpen,
 }) => {
     return (
-        <div className="flex items-center justify-between px-6 py-4 border-b border-fd-border/50 bg-fd-background/60 backdrop-blur-sm">
-            {/* Left: Title and Badge */}
+        <div className="flex items-center justify-between px-4 py-3 border-b border-fd-border/50 bg-fd-background/60 backdrop-blur-sm">
+            {/* Left: Mobile menu + Title + Badge */}
             <div className="flex items-center gap-3">
-                <div className="flex items-center gap-2.5">
-                    <Code2 className="h-5 w-5 text-primary" />
-                    <h1 className="text-lg font-semibold text-fd-foreground">JSON Validator</h1>
-                </div>
-                <Badge variant="secondary" size="sm" className="ml-2">
+                <Button
+                    variant="ghost"
+                    size="icon"
+                    onClick={onMobileMenuOpen}
+                    className="md:hidden h-8 w-8 shrink-0"
+                    aria-label="Open sidebar"
+                >
+                    <Menu className="h-4 w-4" />
+                </Button>
+                <span className="font-semibold text-fd-foreground">JSON Validator</span>
+                <Badge variant="secondary" className="text-xs hidden sm:inline-flex">
                     {typeLabel}
                 </Badge>
             </div>
 
             {/* Right: Action Buttons */}
-            <div className="flex items-center gap-2.5">
-                <TooltipProvider>
+            <TooltipProvider>
+                <div className="flex items-center gap-1">
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant="ghost"
+                                size="icon"
                                 onClick={onFormat}
                                 disabled={!hasInput}
-                                className="gap-2"
+                                className="h-8 w-8"
+                                aria-label="Format JSON"
                             >
                                 <Sparkles className="h-4 w-4" />
-                                <span className="hidden sm:inline text-sm">Format</span>
                             </Button>
                         </TooltipTrigger>
-                        <TooltipContent>Format/prettify JSON (Ctrl+Shift+F)</TooltipContent>
+                        <TooltipContent>Format JSON (Ctrl+Shift+F)</TooltipContent>
                     </Tooltip>
 
                     <Tooltip>
                         <TooltipTrigger asChild>
                             <Button
-                                variant="outline"
-                                size="sm"
+                                variant="ghost"
+                                size="icon"
                                 onClick={onClear}
                                 disabled={!hasInput}
-                                className="gap-2"
+                                className="h-8 w-8"
+                                aria-label="Clear editor"
                             >
                                 <Eraser className="h-4 w-4" />
-                                <span className="hidden sm:inline text-sm">Clear</span>
                             </Button>
                         </TooltipTrigger>
                         <TooltipContent>Clear editor</TooltipContent>
                     </Tooltip>
 
+                    <div className="w-px h-5 bg-fd-border/60 mx-1.5" />
+
                     <Button
+                        size="sm"
                         onClick={onValidate}
                         disabled={!hasInput || isValidating}
-                        className="gap-2 bg-primary hover:bg-primary/90 text-white ml-1"
+                        className="gap-1.5"
                     >
-                        <Play className="h-4 w-4" />
                         {isValidating ? (
-                            <>
-                                <span className="inline-flex">
-                                    <span className="animate-spin">⚙</span>
-                                </span>
-                                Validating...
-                            </>
+                            <Loader2 className="h-4 w-4 animate-spin" />
                         ) : (
-                            "Validate"
+                            <Play className="h-4 w-4" />
                         )}
+                        {isValidating ? "Validating..." : "Validate"}
                     </Button>
-                </TooltipProvider>
-            </div>
+                </div>
+            </TooltipProvider>
         </div>
     );
 };

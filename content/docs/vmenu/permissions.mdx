@@ -47,7 +47,7 @@ vMenu uses FiveM's built-in **ACE (Access Control Entry)** and **Principal** sys
     {
       term: "ACE",
       description:
-        "Access Control Entry - grants or denies a specific permission to a principal",
+        "Grants or denies a specific permission to a principal; the core building block of the ACE permission system",
     },
     {
       term: "Principal",
@@ -930,27 +930,71 @@ add_principal identifier.steam:TESTVIP group.vip
 
 ### Verification Checklist
 
-- [ ] Admins can access everything
-- [ ] Moderators can manage players but not change world
-- [ ] VIP has extra features but not admin powers
-- [ ] Regular players have appropriate restrictions
-- [ ] Denied permissions actually deny access
-- [ ] Logs show permission checks
+<CheckList
+  items={[
+    "Admins can access everything",
+    "Moderators can manage players but not change the world",
+    "VIP has extra features but not admin powers",
+    "Regular players have appropriate restrictions",
+    "Denied permissions actually deny access",
+    "Logs show permission checks",
+  ]}
+  variant="bullet"
+/>
 
 ## Additional Resources
 
-- 📖 [FiveM ACE Documentation](https://docs.fivem.net/docs/server-manual/permissions/)
-- 💬 [vMenu Discord](https://vespura.com/vmenu/discord)
-- 📝 [Permission Examples GitHub](https://github.com/TomGrobbe/vMenu/tree/master/config)
-- 🌐 [CFX Forums](https://forum.cfx.re/)
+<QuickLinks
+  links={[
+    {
+      title: "FiveM ACE Documentation",
+      description: "Official reference for the FiveM ACE permission system",
+      href: "https://docs.fivem.net/docs/server-manual/permissions/",
+      icon: "book",
+    },
+    {
+      title: "vMenu Discord",
+      description: "Community support and discussion",
+      href: "https://vespura.com/vmenu/discord",
+      icon: "message-circle",
+    },
+    {
+      title: "Permission Examples",
+      description: "Reference permission configurations on GitHub",
+      href: "https://github.com/TomGrobbe/vMenu/tree/master/config",
+      icon: "github",
+    },
+    {
+      title: "CFX Forums",
+      description: "Official CitizenFX community forums",
+      href: "https://forum.cfx.re/",
+      icon: "globe",
+    },
+  ]}
+  columns={2}
+/>
 
 ## Next Steps
 
 After configuring permissions:
 
-- [Explore Features](/docs/vmenu/features) - Learn what each permission unlocks
-- [Test Thoroughly](/docs/vmenu/troubleshooting) - Verify security
-- [Train Staff](/docs/vmenu/features) - Document your permission structure
+<QuickLinks
+  links={[
+    {
+      title: "Explore Features",
+      description: "Learn what each permission unlocks",
+      href: "/docs/vmenu/features",
+      icon: "grid",
+    },
+    {
+      title: "Troubleshooting",
+      description: "Verify your permission setup is working correctly",
+      href: "/docs/vmenu/troubleshooting",
+      icon: "wrench",
+    },
+  ]}
+  columns={2}
+/>
 
 <Callout type="success">
   **Permissions Configured!** Your server is now secure with properly configured

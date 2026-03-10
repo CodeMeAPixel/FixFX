@@ -36,15 +36,6 @@ These best practices have been compiled from years of community experience, secu
 
 ## Core Principles
 
-<CheckList
-  items={[
-    "Always assume that client-side code can be manipulated. Validate everything on the server.",
-    "Every millisecond counts in a multiplayer environment. Optimize loops and minimize network traffic.",
-    "Write maintainable, documented code that follows consistent patterns.",
-    "Design systems that are intuitive and responsive for better player experience.",
-  ]}
-/>
-
 ### Security First
 
 Always assume that client-side code can be manipulated. Validate everything on the server, implement proper permissions, and follow the principle of least privilege.
@@ -139,126 +130,186 @@ Effectively manage and maintain your server:
 
 ### Daily Tasks
 
-- ✅ Monitor server performance and player count
-- ✅ Check error logs for issues
-- ✅ Review player reports and take action
-- ✅ Backup critical data
+<CheckList
+  items={[
+    "Monitor server performance and player count",
+    "Check error logs for issues",
+    "Review player reports and take action",
+    "Back up critical data",
+  ]}
+  variant="check"
+/>
 
 ### Weekly Tasks
 
-- ✅ Update resources and dependencies
-- ✅ Review security logs
-- ✅ Performance analysis and optimization
-- ✅ Community feedback review
+<CheckList
+  items={[
+    "Update resources and dependencies",
+    "Review security logs",
+    "Analyze performance and optimize where needed",
+    "Review community feedback",
+  ]}
+  variant="check"
+/>
 
 ### Monthly Tasks
 
-- ✅ Full security audit
-- ✅ Performance benchmarking
-- ✅ Resource code review
-- ✅ Disaster recovery testing
+<CheckList
+  items={[
+    "Conduct a full security audit",
+    "Run performance benchmarks",
+    "Review resource code for quality and security",
+    "Test disaster recovery procedures",
+  ]}
+  variant="check"
+/>
 
 ## Development Checklist
 
 ### Before Writing Code
 
-- [ ] Plan the feature requirements and scope
-- [ ] Design the database schema (if needed)
-- [ ] Consider security implications
-- [ ] Identify performance requirements
+<CheckList
+  items={[
+    "Plan the feature requirements and scope",
+    "Design the database schema (if needed)",
+    "Consider security implications",
+    "Identify performance requirements",
+  ]}
+  variant="bullet"
+/>
 
 ### During Development
 
-- [ ] Follow consistent coding standards
-- [ ] Implement proper error handling
-- [ ] Add comprehensive logging
-- [ ] Write unit tests for critical functions
-- [ ] Document public APIs and functions
+<CheckList
+  items={[
+    "Follow consistent coding standards",
+    "Implement proper error handling",
+    "Add comprehensive logging",
+    "Write unit tests for critical functions",
+    "Document public APIs and functions",
+  ]}
+  variant="bullet"
+/>
 
 ### Before Deployment
 
-- [ ] Code review by another developer
-- [ ] Security testing and validation
-- [ ] Performance testing under load
-- [ ] Backup existing systems
-- [ ] Test rollback procedures
+<CheckList
+  items={[
+    "Code review by another developer",
+    "Security testing and validation",
+    "Performance testing under load",
+    "Back up existing systems",
+    "Test rollback procedures",
+  ]}
+  variant="bullet"
+/>
 
 ### After Deployment
 
-- [ ] Monitor for errors and performance issues
-- [ ] Gather user feedback
-- [ ] Document any issues and resolutions
-- [ ] Plan future improvements
+<CheckList
+  items={[
+    "Monitor for errors and performance issues",
+    "Gather user feedback",
+    "Document any issues and resolutions",
+    "Plan future improvements",
+  ]}
+  variant="bullet"
+/>
 
 ## Security Checklist
 
 ### Server Security
 
-- [ ] Enable request filtering and paranoia mode
-- [ ] Set appropriate authentication trust levels
-- [ ] Configure network security settings
-- [ ] Implement rate limiting
-- [ ] Regular security audits
+<CheckList
+  items={[
+    "Enable request filtering and paranoia mode",
+    "Set appropriate authentication trust levels",
+    "Configure network security settings",
+    "Implement rate limiting",
+    "Conduct regular security audits",
+  ]}
+  variant="bullet"
+/>
 
 ### Resource Security
 
-- [ ] Validate all client inputs on server
-- [ ] Use parameterized database queries
-- [ ] Implement proper permission checks
-- [ ] Sanitize user-generated content
-- [ ] Log security-relevant events
+<CheckList
+  items={[
+    "Validate all client inputs on the server",
+    "Use parameterized database queries",
+    "Implement proper permission checks",
+    "Sanitize user-generated content",
+    "Log security-relevant events",
+  ]}
+  variant="bullet"
+/>
 
 ### Data Security
 
-- [ ] Encrypt sensitive data at rest
-- [ ] Use secure communication channels
-- [ ] Implement proper backup encryption
-- [ ] Regular backup testing
-- [ ] Access control for administrative functions
+<CheckList
+  items={[
+    "Encrypt sensitive data at rest",
+    "Use secure communication channels",
+    "Implement proper backup encryption",
+    "Test backups regularly",
+    "Enforce access control for administrative functions",
+  ]}
+  variant="bullet"
+/>
 
 ## Performance Checklist
 
 ### Server Performance
 
-- [ ] Optimize network settings
-- [ ] Monitor resource usage
-- [ ] Configure appropriate limits
-- [ ] Regular performance profiling
-- [ ] Database query optimization
+<CheckList
+  items={[
+    "Optimize network settings",
+    "Monitor resource usage",
+    "Configure appropriate limits",
+    "Run regular performance profiling",
+    "Optimize database queries",
+  ]}
+  variant="bullet"
+/>
 
 ### Resource Performance
 
-- [ ] Use appropriate wait times in loops
-- [ ] Implement efficient event handling
-- [ ] Minimize network traffic
-- [ ] Cache frequently accessed data
-- [ ] Clean up unused resources
+<CheckList
+  items={[
+    "Use appropriate wait times in loops",
+    "Implement efficient event handling",
+    "Minimize network traffic",
+    "Cache frequently accessed data",
+    "Clean up unused resources",
+  ]}
+  variant="bullet"
+/>
 
 ## Common Pitfalls to Avoid
 
 ### Security Pitfalls
 
-- ❌ Trusting client-side data without validation
-- ❌ Using string concatenation for SQL queries
-- ❌ Storing sensitive data in client-accessible locations
-- ❌ Implementing security through obscurity
-- ❌ Ignoring input validation for "trusted" sources
+- Trusting client-side data without server-side validation
+- Using string concatenation for SQL queries
+- Storing sensitive data in client-accessible locations
+- Relying on security through obscurity
+- Skipping input validation for "trusted" sources
 
 ### Performance Pitfalls
 
-- ❌ Using `Citizen.Wait(0)` unnecessarily
-- ❌ Processing all players every frame
-- ❌ Not implementing proper database connection pooling
-- ❌ Storing large amounts of data in memory unnecessarily
-- ❌ Not monitoring resource usage regularly
+- Using `Citizen.Wait(0)` unnecessarily
+- Processing all players every frame
+- Not implementing database connection pooling
+- Storing excessive amounts of data in memory
+- Neglecting regular resource usage monitoring
 
 ### Development Pitfalls
 
-- ❌ Not following consistent naming conventions
-- ❌ Writing functions that do too many things
-- ❌ Not implementing proper error handling
-- ❌ Skipping code documentation
-- ❌ Not using version control effectively
+- Inconsistent naming conventions across the codebase
+- Writing functions that handle too many responsibilities
+- Omitting proper error handling
+- Skipping code documentation
+- Not using version control effectively
 
 ## Tools and Resources
 

@@ -4,7 +4,6 @@ description: Complete guide to txAdmin for Windows and Linux users.
 icon: "Shield"
 ---
 
-import { FixFXIcon, GithubIcon } from "@ui/icons";
 import {
   FeatureList,
   CheckList,
@@ -81,42 +80,41 @@ txAdmin is a comprehensive web-based management system that provides an intuitiv
 
 ## Management Guides
 
-<Cards>
-  <Card
-    icon={<FixFXIcon />}
-    title="Server Configuration"
-    href="/docs/txadmin/configuration"
-  >
-    Learn about the Config Editor and what settings to modify safely.
-  </Card>
-  <Card
-    icon={<FixFXIcon />}
-    title="Server Management"
-    href="/docs/txadmin/server-management"
-  >
-    Manage server resources, players, and system operations.
-  </Card>
-  <Card
-    icon={<FixFXIcon />}
-    title="Backup & Recovery"
-    href="/docs/txadmin/backup-system"
-  >
-    Set up automated backups and restore your server when needed.
-  </Card>
-  <Card
-    icon={<FixFXIcon />}
-    title="Permissions"
-    href="/docs/txadmin/permissions"
-  >
-    Configure admin roles and manage user permissions.
-  </Card>
-</Cards>
+<QuickLinks
+  links={[
+    {
+      title: "Server Configuration",
+      description: "Learn about the Config Editor and what settings to modify safely.",
+      href: "/docs/txadmin/configuration",
+      icon: "settings",
+    },
+    {
+      title: "Server Management",
+      description: "Manage server resources, players, and system operations.",
+      href: "/docs/txadmin/server-management",
+      icon: "server",
+    },
+    {
+      title: "Backup & Recovery",
+      description: "Set up automated backups and restore your server when needed.",
+      href: "/docs/txadmin/backup-system",
+      icon: "database",
+    },
+    {
+      title: "Permissions",
+      description: "Configure admin roles and manage user permissions.",
+      href: "/docs/txadmin/permissions",
+      icon: "shield",
+    },
+  ]}
+  columns={2}
+/>
 
 ## Getting Started Checklist
 
 <CheckList
   items={[
-    "Choose your platform - Windows or Linux",
+    "Choose between Windows and Linux installation",
     "Follow the installation guide for your OS",
     "Access the web panel and create admin accounts",
     "Configure server.cfg and basic settings",

@@ -5,6 +5,49 @@ All notable changes to FixFX will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.4.0] - 2026-03-10
+
+### Added
+
+#### Fixie AI Chat
+
+- **Chat Page** (`/chat`) — New full-screen AI assistant "Fixie" for the CitizenFX ecosystem with real-time streaming responses, message history, and persistent saved chats (localStorage)
+- **Chat API Route** (`/api/chat`) — Streaming AI endpoint supporting 8 models across three providers (OpenAI, Anthropic, Google) with model allowlisting and max 4096 token responses
+- **BYOK (Bring Your Own Key)** — Users can supply their own API keys for Anthropic and Google to unlock Claude and Gemini models; keys stored in localStorage and never sent to the server unless used for that provider's request
+- **8 AI Models** — GPT-4o, GPT-4o Mini, GPT-4 Turbo, GPT-3.5 Turbo (OpenAI); Claude 3.5 Sonnet, Claude 3 Haiku (Anthropic, BYOK); Gemini 2.0 Flash, Gemini 1.5 Flash (Google, BYOK)
+- **ChatInterface Component** — Auto-growing textarea, Enter-to-send / Shift+Enter for newline, markdown rendering with syntax-highlighted code blocks, copy-to-clipboard, typing indicator, and message timestamps
+- **Chat Sidebar** — Collapsible desktop sidebar (`w-72` / `w-14`) with two-tab layout (Chats / Settings), navigation links, recent chat history (up to 12), model selector, temperature slider, and BYOK key management
+- **Mobile Chat Header** — Fixed top bar with menu button, Fixie branding, and active model badge
+- **Mobile Chat Drawer** — Sheet-based mobile drawer mirroring the desktop sidebar's two-tab structure
+- **Chat Layout & SEO** — Dedicated layout with metadata, Open Graph tags, Twitter image, and canonical URL for `/chat`
+- **Chat Persistence** — Chats auto-save to localStorage with deduplication, active chat restoration on page load, and custom events (`chatsUpdated`, `activeChatChanged`, `byokChanged`) for cross-component sync
+
+#### Game References
+
+- **Vehicle Models** (`/game-references/vehicle-models`) — Searchable reference page for all GTA V vehicle models with category filtering and pagination
+- **Vehicle Colours** (`/game-references/vehicle-colours`) — Searchable reference page for vehicle colours with type filtering and pagination
+- **Vehicle Flags** (`/game-references/vehicle-flags`) — Searchable reference page for vehicle flags with pagination
+
+#### Navigation
+
+- **NAV_LINKS Consistency** — Added Game References, Validator, Hosting, and Chat to the global `NAV_LINKS` constant so all sidebars and navigation menus share the same link set
+
+### Changed
+
+#### Fixie AI Chat
+
+- **Tabbed Sidebar Layout** — Desktop sidebar uses a two-tab design (Chats / Settings) to separate navigation and chat history from model configuration and API keys, preventing clutter as chat history grows
+- **Wider Chat Area** — Message area and input widened from `max-w-5xl` to `max-w-7xl` so conversations use more screen real estate on large displays
+- **Collapsed Sidebar** — Collapsed state shows icon-only navigation links with tooltips, plus History and Settings expand buttons separated by a divider
+
+### Fixed
+
+#### Fixie AI Chat
+
+- **Encoding Artifacts** — Fixed garbled text in sidebar (`Â·` → `·`, `â€"` → `—`) caused by previous encoding issue
+
+---
+
 ## [1.3.0] - 2026-03-04
 
 ### Added

@@ -1,13 +1,11 @@
 "use client";
 
 import { useChat } from "ai/react";
-import { Button, Card } from "@ui/components";
-import { Input } from "@ui/components/input";
+import { Button } from "@ui/components";
 import { ScrollArea } from "@ui/components/scroll-area";
 import { cn } from "@utils/functions/cn";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import {
-  Code,
   Loader2,
   AlertCircle,
   X,
@@ -15,7 +13,6 @@ import {
   Check,
   Send,
   Sparkles,
-  Bot,
   User,
 } from "lucide-react";
 import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
@@ -67,6 +64,7 @@ export function ChatInterface({
   });
   const [showNotice, setShowNotice] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLTextAreaElement>(null);
   const [copiedCode, setCopiedCode] = useState<string | null>(null);
   const [currentChatId, setCurrentChatId] = useState<string | null>(null);
   const [isExistingChat, setIsExistingChat] = useState(false);
@@ -76,6 +74,43 @@ export function ChatInterface({
 
   // Add a ref for the chat container
   const chatContainerRef = useRef<HTMLDivElement>(null);
+
+  // Auto-resize textarea as content grows
+  const autoResize = useCallback(() => {
+    const textarea = textareaRef.current;
+    if (!textarea) return;
+    textarea.style.height = "auto";
+    textarea.style.height = `${Math.min(textarea.scrollHeight, 160)}px`;
+  }, []);
+
+  useEffect(() => {
+    autoResize();
+  }, [input, autoResize]);
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (e.key === "Enter" && !e.shiftKey && !e.nativeEvent.isComposing) {
+      e.preventDefault();
+      if (!isLoading && input.trim()) {
+        const form = e.currentTarget.closest("form");
+        if (form) form.requestSubmit();
+      }
+    }
+  };
+
+  const handleFormSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    if (isLoading || !input.trim()) return;
+    const byok =
+      typeof window !== "undefined"
+        ? {
+            openai: localStorage.getItem("fixfx-byok-openai") || undefined,
+            anthropic:
+              localStorage.getItem("fixfx-byok-anthropic") || undefined,
+            google: localStorage.getItem("fixfx-byok-google") || undefined,
+          }
+        : {};
+    handleSubmit(e, { body: { byok } });
+  };
 
   // Skip initial setup if we're loading an existing chat
   useEffect(() => {
@@ -332,12 +367,13 @@ export function ChatInterface({
       <ReactMarkdown
         remarkPlugins={[remarkGfm, remarkBreaks]}
         components={{
-          code({ node, inline, className, children, ...props }) {
+          code({ node, className, children, ...props }) {
             const match = /language-(\w+)/.exec(className || "");
             const language = match ? match[1] : "";
             const code = String(children).replace(/\n$/, "");
+            const isBlock = !!(match || code.includes("\n"));
 
-            if (!inline && language) {
+            if (isBlock && language) {
               return (
                 <div className="relative group my-4 rounded-md overflow-hidden">
                   <div className="flex items-center justify-between bg-gray-800 px-4 py-1 text-xs font-mono text-gray-300">
@@ -463,7 +499,7 @@ export function ChatInterface({
       className={cn(
         "flex flex-col w-full bg-fd-background/80 backdrop-blur-sm relative",
         fullHeight ? "h-full" : "h-[calc(100vh-12rem)]",
-        "md:mt-0 mt-16",
+        "md:mt-0 mt-12",
         "overflow-hidden",
       )}
     >
@@ -525,7 +561,7 @@ export function ChatInterface({
           className="flex-1 p-3 sm:p-4 overflow-y-auto"
           style={{ scrollbarWidth: "thin" }}
         >
-          <div className="space-y-4 mb-4 pb-2 max-w-3xl mx-auto">
+          <div className="space-y-4 mb-4 pb-2 max-w-7xl mx-auto w-full px-2">
             {messages.map((message, index) => (
               <motion.div
                 key={message.id}
@@ -620,16 +656,23 @@ export function ChatInterface({
 
       <div className="border-t border-fd-border bg-fd-background/90 backdrop-blur-md sticky bottom-0 z-40">
         <form
-          onSubmit={handleSubmit}
-          className="flex gap-2 p-3 sm:p-4 max-w-3xl mx-auto"
+          onSubmit={handleFormSubmit}
+          className="flex items-end gap-2 p-3 sm:p-4 max-w-7xl mx-auto w-full px-2"
         >
           <div className="flex-1 relative">
-            <Input
+            <textarea
+              ref={textareaRef}
               value={input}
-              onChange={handleInputChange}
-              placeholder="Ask about FiveM, RedM, or txAdmin..."
-              className="w-full bg-fd-muted/30 border-fd-border focus:border-[#5865F2] focus:ring-1 focus:ring-[#5865F2]/20 pr-12 rounded-xl"
+              onChange={(e) => {
+                handleInputChange(e);
+                autoResize();
+              }}
+              onKeyDown={handleKeyDown}
+              placeholder="Ask about FiveM, RedM, or txAdmin... (Shift+Enter for newline)"
+              className="w-full bg-fd-muted/30 border border-fd-border focus:border-[#5865F2] focus:ring-1 focus:ring-[#5865F2]/20 rounded-xl text-sm resize-none overflow-hidden min-h-[40px] max-h-[160px] px-3 py-2 leading-[1.5] placeholder:text-muted-foreground focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={isLoading}
+              rows={1}
+              style={{ height: "40px" }}
             />
           </div>
           <Button
@@ -637,7 +680,7 @@ export function ChatInterface({
             disabled={isLoading || !input.trim()}
             size="icon"
             className={cn(
-              "h-10 w-10 rounded-xl transition-all",
+              "h-10 w-10 rounded-xl transition-all flex-shrink-0",
               input.trim()
                 ? "bg-[#5865F2] hover:bg-[#5865F2]/90 text-white shadow-lg shadow-[#5865F2]/20"
                 : "bg-fd-muted text-muted-foreground",

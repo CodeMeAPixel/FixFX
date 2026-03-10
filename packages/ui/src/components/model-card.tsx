@@ -13,6 +13,7 @@ interface ModelCardProps {
   isSelected: boolean;
   disabled?: boolean;
   isNew?: boolean;
+  keyRequired?: boolean;
   onClick: () => void;
 }
 
@@ -27,6 +28,7 @@ export function ModelCard({
   isSelected,
   disabled = false,
   isNew = false,
+  keyRequired = false,
   onClick,
 }: ModelCardProps) {
   return (
@@ -69,7 +71,12 @@ export function ModelCard({
                   New
                 </span>
               )}
-              {disabled && (
+              {disabled && keyRequired && (
+                <span className="rounded-full bg-[#5865F2]/10 text-[#5865F2] px-2 py-0.5 text-[10px] font-medium">
+                  Key Required
+                </span>
+              )}
+              {disabled && !keyRequired && (
                 <span className="rounded-full bg-amber-500/10 text-amber-500 px-2 py-0.5 text-[10px] font-medium">
                   Soon
                 </span>

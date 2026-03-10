@@ -4,7 +4,6 @@ description: Your ultimate resource for CitizenFX, FiveM, and RedM documentation
 icon: "ChevronRight"
 ---
 
-import { FixFXIcon, GithubIcon } from "@ui/icons";
 import {
   FeatureList,
   CheckList,
@@ -23,25 +22,21 @@ import {
   ComparisonTable,
 } from "@ui/components/mdx-components";
 
-FixFX is your go-to resource for everything CitizenFX, FiveM, and RedM. Whether you're a server owner, developer, or player, FixFX provides the tools and knowledge you need to thrive in the CitizenFX ecosystem.
+FixFX is a centralized documentation hub for CitizenFX, FiveM, and RedM. Whether you are a server owner, developer, or player, FixFX provides the guides and knowledge you need to work confidently within the CitizenFX ecosystem.
 
-<PropertyCard
-  type="info"
-  name="Welcome to FixFX"
-  description="FixFX simplifies your journey through the CitizenFX platform. From server setup to troubleshooting and resource development, we have you covered."
-/>
+<Callout type="info">
+  FixFX covers everything from initial server setup to advanced troubleshooting and resource development.
+</Callout>
 
-# What is FixFX?
+## What is FixFX?
 
-FixFX is a centralized documentation hub for the CitizenFX ecosystem. It offers comprehensive guides, troubleshooting tips, and best practices for server management, framework integration, and resource development.
+FixFX is a centralized documentation hub for the CitizenFX ecosystem. It provides comprehensive guides, troubleshooting references, and best practices for server management, framework integration, and resource development.
 
-<PropertyCard
-  type="info"
-  name="Always Updated"
-  description="FixFX is continuously updated to ensure you have access to the latest information and solutions for the CitizenFX platform."
-/>
+<Callout type="info">
+  FixFX is continuously updated to reflect the latest changes and solutions across the CitizenFX platform.
+</Callout>
 
-# Why Choose FixFX?
+## Why Choose FixFX?
 
 <FeatureList
   features={[
@@ -78,24 +73,23 @@ FixFX is a centralized documentation hub for the CitizenFX ecosystem. It offers 
   columns={2}
 />
 
-# Additional Information
+## Additional Information
 
-- [Frequently Asked Questions (FAQ)](/docs/core/faq): Find answers to common questions about FixFX.
-- [Disclaimer](/docs/core/disclaimer): Learn about FixFX's lack of affiliation with the CitizenFX Collective or Rockstar Games.
+- [Frequently Asked Questions (FAQ)](/docs/core/faq) — Answers to common questions about FixFX.
+- [Disclaimer](/docs/core/disclaimer) — FixFX's relationship to the CitizenFX Collective and Rockstar Games.
 
-<Cards>
-  <Card
-    icon={<FixFXIcon />}
-    title="Explore Documentation"
-    href="/docs/overview"
-  >
-    Start your journey with FixFX.
-  </Card>
-  <Card
-    icon={<GithubIcon />}
-    title="Contribute to FixFX"
-    href="https://github.com/ByteBrushStudios/FixFX"
-  >
-    Help us improve the FixFX knowledge hub.
-  </Card>
-</Cards>
+<QuickLinks
+  links={[
+    {
+      title: "Explore Documentation",
+      description: "Browse guides, references, and best practices across the CitizenFX ecosystem.",
+      href: "/docs/overview",
+    },
+    {
+      title: "Contribute to FixFX",
+      description: "Submit improvements, report issues, or add new content on GitHub.",
+      href: "https://github.com/ByteBrushStudios/FixFX",
+    },
+  ]}
+  columns={2}
+/>

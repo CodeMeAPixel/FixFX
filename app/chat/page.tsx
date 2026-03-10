@@ -125,14 +125,6 @@ export default function AskPage() {
 
   return (
     <div className="relative flex min-h-screen h-screen bg-fd-background overflow-hidden">
-      {/* Ambient background */}
-      <div className="absolute inset-0 -z-10 pointer-events-none overflow-hidden">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,rgba(88,101,242,0.08),rgba(255,255,255,0))]" />
-        <div className="absolute -left-20 -top-20 h-64 w-64 animate-pulse rounded-full bg-[#5865F2]/10 blur-[100px]" />
-        <div className="absolute -bottom-20 -right-20 h-64 w-64 animate-pulse rounded-full bg-[#10B981]/10 blur-[100px]" />
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 h-96 w-96 rounded-full bg-[#5865F2]/5 blur-[150px]" />
-      </div>
-
       {/* Desktop layout */}
       <div className="hidden md:flex w-full h-full">
         <ChatSidebar

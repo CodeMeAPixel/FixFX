@@ -4,9 +4,9 @@ description: "Contribute translations to txAdmin or create custom locales."
 ---
 
 import { AlertTriangle, Info } from "lucide-react";
-import { StepList, FeatureList } from "@ui/components";
+import { StepList, FeatureList, CheckList } from "@ui/components";
 
-# Translation Support
+## Translation Support
 
 txAdmin supports translation for over 30 languages for the in-game interface (menu/warn) and chat messages, as well as Discord warnings.
 
@@ -58,12 +58,17 @@ To contribute, you will need to:
 
 ### Translation Checklist
 
-- [ ] Language code is correct from locale codes list
-- [ ] `$meta.label` is in English
-- [ ] Added to `shared/localeMap.ts` in alphabetical order
-- [ ] All keys translated (none left in English)
-- [ ] Screenshots of in-game testing attached
-- [ ] Pull request description clearly states what language was translated
+<CheckList
+  items={[
+    "Language code is correct from the locale codes list",
+    "`$meta.label` is set to the language name in English",
+    "Added to `shared/localeMap.ts` in alphabetical order",
+    "All keys are translated (none left in English)",
+    "Screenshots of in-game testing are attached",
+    "Pull request description clearly states what language was translated",
+  ]}
+  variant="bullet"
+/>
 
 <div className="my-6 p-4 border border-blue-500/30 bg-blue-500/10 rounded-lg flex gap-3">
   <Info className="w-5 h-5 text-blue-500 flex-shrink-0 mt-0.5" />

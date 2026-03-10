@@ -922,13 +922,18 @@ add_ace group.admin vMenu.Everything allow
 
 ### Regular Tasks
 
-- ✅ Keep FiveM artifacts updated
-- ✅ Update vMenu to latest stable version
-- ✅ Backup permissions configuration
-- ✅ Review logs for errors weekly
-- ✅ Clean old saved data quarterly
-- ✅ Test new features on dev server first
-- ✅ Document custom configurations
+<CheckList
+  items={[
+    "Keep FiveM artifacts updated",
+    "Update vMenu to the latest stable version",
+    "Back up the permissions configuration",
+    "Review logs for errors weekly",
+    "Clean old saved data quarterly",
+    "Test new features on a development server first",
+    "Document custom configurations",
+  ]}
+  variant="check"
+/>
 
 ### Testing Before Production
 
@@ -943,35 +948,40 @@ add_ace group.admin vMenu.Everything allow
 
 ## Common Mistakes to Avoid
 
-1. ❌ Running multiple admin menus simultaneously
-2. ❌ Granting `vMenu.Everything` to everyone
-3. ❌ Not restarting server after permission changes
-4. ❌ Using outdated FiveM artifacts
-5. ❌ Modifying vMenu source files
-6. ❌ Not backing up before updates
-7. ❌ Ignoring console errors
-8. ❌ Testing directly on production server
-9. ❌ Not reading documentation first
-10. ❌ Using IP-based permissions
+- Running multiple admin menus simultaneously
+- Granting `vMenu.Everything` to all players
+- Not restarting the server after permission changes
+- Using outdated FiveM artifacts
+- Modifying vMenu source files
+- Not backing up before updates
+- Ignoring console errors
+- Testing directly on a production server
+- Not reading the documentation first
+- Using IP-based permissions
 
 ## Quick Fixes Checklist
 
 When something isn't working, try these in order:
 
-- [ ] Check server console for errors
-- [ ] Verify vMenu is started: `ensure vMenu`
-- [ ] Restart vMenu: `restart vMenu`
-- [ ] Check permissions configuration
-- [ ] Verify player identifiers are correct
-- [ ] Restart entire server
-- [ ] Update to latest vMenu version
-- [ ] Update to latest FiveM artifacts
-- [ ] Clear FiveM cache (client-side)
-- [ ] Check for conflicting resources
-- [ ] Test with minimal resource setup
-- [ ] Review documentation
-- [ ] Search existing GitHub issues
-- [ ] Ask for help with full details
+<CheckList
+  items={[
+    "Check server console for errors",
+    "Verify vMenu is started: `ensure vMenu`",
+    "Restart vMenu: `restart vMenu`",
+    "Check permissions configuration",
+    "Verify player identifiers are correct",
+    "Restart the entire server",
+    "Update to the latest vMenu version",
+    "Update to the latest FiveM artifacts",
+    "Clear FiveM cache (client-side)",
+    "Check for conflicting resources",
+    "Test with a minimal resource setup",
+    "Review the documentation",
+    "Search existing GitHub issues",
+    "Ask for help with full details",
+  ]}
+  variant="bullet"
+/>
 
 <Callout type="success">
   **Still Stuck?** Join the vMenu Discord community for real-time help from
@@ -980,9 +990,44 @@ When something isn't working, try these in order:
 
 ## Additional Resources
 
-- 📖 [vMenu Setup Guide](/docs/vmenu/setup)
-- ⚙️ [Configuration Guide](/docs/vmenu/configuration)
-- 🔒 [Permissions Guide](/docs/vmenu/permissions)
-- 📝 [Features Overview](/docs/vmenu/features)
-- 🌐 [FiveM Documentation](https://docs.fivem.net/)
-- 💬 [vMenu Discord](https://vespura.com/vmenu/discord)
+<QuickLinks
+  links={[
+    {
+      title: "vMenu Setup Guide",
+      description: "Installation and initial configuration",
+      href: "/docs/vmenu/setup",
+      icon: "download",
+    },
+    {
+      title: "Configuration Guide",
+      description: "Customize vMenu settings",
+      href: "/docs/vmenu/configuration",
+      icon: "settings",
+    },
+    {
+      title: "Permissions Guide",
+      description: "Configure access control",
+      href: "/docs/vmenu/permissions",
+      icon: "shield",
+    },
+    {
+      title: "Features Overview",
+      description: "Explore all available vMenu features",
+      href: "/docs/vmenu/features",
+      icon: "grid",
+    },
+    {
+      title: "FiveM Documentation",
+      description: "Official CitizenFX documentation",
+      href: "https://docs.fivem.net/",
+      icon: "book",
+    },
+    {
+      title: "vMenu Discord",
+      description: "Real-time support from the community",
+      href: "https://vespura.com/vmenu/discord",
+      icon: "message-circle",
+    },
+  ]}
+  columns={2}
+/>

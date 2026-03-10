@@ -1,20 +1,59 @@
-import { anthropic } from "@ai-sdk/anthropic";
-import { google } from "@ai-sdk/google";
-import { openai } from "@ai-sdk/openai";
+import { createAnthropic } from "@ai-sdk/anthropic";
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createOpenAI, openai } from "@ai-sdk/openai";
 import { geolocation, ipAddress } from "@vercel/functions";
 import { convertToCoreMessages, streamText } from "ai";
 import { z } from "zod";
 
 export const maxDuration = 30;
 
+const ALLOWED_MODELS = new Set([
+  "gpt-4o",
+  "gpt-4o-mini",
+  "gpt-4-turbo",
+  "gpt-3.5-turbo",
+  "gemini-2.0-flash",
+  "gemini-1.5-flash",
+  "claude-3-5-sonnet",
+  "claude-3-haiku",
+]);
+
+interface ByokKeys {
+  openai?: string;
+  anthropic?: string;
+  google?: string;
+}
+
 export async function POST(req: Request) {
   const {
     messages,
     model = "gpt-4o-mini",
     temperature = 0.7,
-  } = await req.json();
+    byok,
+  }: { messages: any[]; model: string; temperature: number; byok?: ByokKeys } =
+    await req.json();
+
+  // Validate model to prevent arbitrary model injection
+  if (!ALLOWED_MODELS.has(model)) {
+    return new Response(JSON.stringify({ error: "Invalid model" }), {
+      status: 400,
+    });
+  }
+
   const { city, latitude, longitude } = geolocation(req);
-  const ip = ipAddress(req);
+  // NOTE: byok keys are intentionally never logged
+  void ipAddress(req);
+
+  // Build provider instances — use BYOK key if provided, fall back to server env key
+  const openaiProvider = (byok?.openai?.trim())
+    ? createOpenAI({ apiKey: byok.openai.trim() })
+    : openai;
+  const anthropicProvider = createAnthropic({
+    apiKey: byok?.anthropic?.trim() || process.env.ANTHROPIC_API_KEY || "",
+  });
+  const googleProvider = createGoogleGenerativeAI({
+    apiKey: byok?.google?.trim() || process.env.GOOGLE_GENERATIVE_AI_API_KEY || "",
+  });
 
   const system = `You are Fixie, a specialized assistant for everything CitizenFX.
 
@@ -87,43 +126,38 @@ You should NOT:
 The user's current location is ${city} at latitude ${latitude} and longitude ${longitude}.
 Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "long", year: "numeric", month: "long", day: "numeric" })}.`;
 
-  console.log({ messages, model, temperature });
+  console.log({ model, temperature });
+
+  const geminiSafetySettings = [
+    { category: "HARM_CATEGORY_HARASSMENT", threshold: "BLOCK_NONE" },
+    { category: "HARM_CATEGORY_HATE_SPEECH", threshold: "BLOCK_NONE" },
+    { category: "HARM_CATEGORY_SEXUALLY_EXPLICIT", threshold: "BLOCK_NONE" },
+    { category: "HARM_CATEGORY_DANGEROUS_CONTENT", threshold: "BLOCK_NONE" },
+  ] as const;
 
   let selectedModel;
   if (model === "gpt-4o") {
-    selectedModel = openai("gpt-4o");
+    selectedModel = openaiProvider("gpt-4o");
   } else if (model === "gpt-4o-mini") {
-    selectedModel = openai("gpt-4o-mini");
+    selectedModel = openaiProvider("gpt-4o-mini");
   } else if (model === "gpt-4-turbo") {
-    selectedModel = openai("gpt-4-turbo");
+    selectedModel = openaiProvider("gpt-4-turbo");
   } else if (model === "gpt-3.5-turbo") {
-    selectedModel = openai("gpt-3.5-turbo");
-  } else if (model === "gemini-1.5-flash") {
-    selectedModel = google("models/gemini-1.5-flash-latest", {
-      safetySettings: [
-        {
-          category: "HARM_CATEGORY_HARASSMENT",
-          threshold: "BLOCK_NONE",
-        },
-        {
-          category: "HARM_CATEGORY_HATE_SPEECH",
-          threshold: "BLOCK_NONE",
-        },
-        {
-          category: "HARM_CATEGORY_SEXUALLY_EXPLICIT",
-          threshold: "BLOCK_NONE",
-        },
-        {
-          category: "HARM_CATEGORY_DANGEROUS_CONTENT",
-          threshold: "BLOCK_NONE",
-        },
-      ],
+    selectedModel = openaiProvider("gpt-3.5-turbo");
+  } else if (model === "gemini-2.0-flash") {
+    selectedModel = googleProvider("gemini-2.0-flash", {
+      safetySettings: geminiSafetySettings,
     });
+  } else if (model === "gemini-1.5-flash") {
+    selectedModel = googleProvider("gemini-1.5-flash-latest", {
+      safetySettings: geminiSafetySettings,
+    });
+  } else if (model === "claude-3-5-sonnet") {
+    selectedModel = anthropicProvider("claude-3-5-sonnet-20241022");
   } else if (model === "claude-3-haiku") {
-    selectedModel = anthropic("claude-3-haiku-20240307");
+    selectedModel = anthropicProvider("claude-3-haiku-20240307");
   } else {
-    // Default to GPT-4o mini as fallback
-    selectedModel = openai("gpt-4o-mini");
+    selectedModel = openaiProvider("gpt-4o-mini");
   }
 
   const result = await streamText({
@@ -131,7 +165,7 @@ Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "lon
     messages: convertToCoreMessages(messages),
     temperature,
     system,
-    maxTokens: 1000,
+    maxTokens: 4096,
     experimental_toolCallStreaming: true,
     tools: {
       weatherTool: {
@@ -155,12 +189,10 @@ Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "lon
           latitude: number;
           longitude: number;
         }) => {
-          console.log(latitude, longitude);
           const response = await fetch(
             `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,apparent_temperature,rain`,
           );
           const data = await response.json();
-          console.log(data);
           return {
             temperature: data.current.temperature_2m,
             apparentTemperature: data.current.apparent_temperature,
@@ -197,9 +229,7 @@ Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "lon
           const apiKey = process.env.TAVILY_API_KEY;
           const response = await fetch("https://api.tavily.com/search", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
               api_key: apiKey,
               query,
@@ -210,12 +240,12 @@ Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "lon
             }),
           });
           const data = await response.json();
-          let context = data.results.map(
+          const context = data.results.map(
             (obj: {
-              url: any;
-              content: any;
-              title: any;
-              raw_content: any;
+              url: string;
+              content: string;
+              title: string;
+              raw_content: string;
             }) => ({
               url: obj.url,
               title: obj.title,
@@ -238,16 +268,12 @@ Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "lon
         }),
         execute: async ({ code }) => {
           code = code.replace(/\\n/g, "\n").replace(/\\/g, "");
-          console.log(code);
           const response = await fetch("https://interpreter.za16.co", {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ code }),
           });
           const data = await response.json();
-          console.log(data.std_out);
           return {
             output: data.std_out,
             error: data.error,
@@ -263,3 +289,4 @@ Today's date and day is ${new Date().toLocaleDateString("en-US", { weekday: "lon
 
   return result.toAIStreamResponse();
 }
+
