@@ -25,7 +25,7 @@ const modelDisplayNames: Record<string, string> = {
 
 export function MobileChatHeader({ onMenuClick, model, temperature }: MobileChatHeaderProps) {
   return (
-    <div className="fixed top-0 left-0 right-0 h-12 flex items-center justify-between px-3 border-b bg-fd-background border-fd-border z-[100]">
+    <div className="h-12 flex items-center justify-between px-3 border-b bg-fd-background border-fd-border shrink-0 z-50">
       <div className="flex items-center gap-2">
         <Button variant="ghost" size="icon" onClick={onMenuClick} className="h-8 w-8">
           <Menu className="h-4 w-4" />

@@ -146,14 +146,14 @@ export default function AskPage() {
         </main>
       </div>
 
-      {/* Mobile layout - positioned relative to allow for fixed header */}
-      <div className="flex flex-col w-full h-full md:hidden relative">
+      {/* Mobile layout */}
+      <div className="flex flex-col w-full h-full md:hidden overflow-hidden">
         <MobileChatHeader
           onMenuClick={() => setMobileDrawerOpen(true)}
           model={model}
           temperature={temperature}
         />
-        <main className="flex-1 h-full flex flex-col">
+        <main className="flex-1 min-h-0 flex flex-col overflow-hidden">
           <ChatInterface
             key={chatKey}
             initialMessages={initialMessages}

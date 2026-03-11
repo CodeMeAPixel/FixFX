@@ -499,7 +499,6 @@ export function ChatInterface({
       className={cn(
         "flex flex-col w-full bg-fd-background/80 backdrop-blur-sm relative",
         fullHeight ? "h-full" : "h-[calc(100vh-12rem)]",
-        "md:mt-0 mt-12",
         "overflow-hidden",
       )}
     >
@@ -572,7 +571,7 @@ export function ChatInterface({
                   delay: index === messages.length - 1 ? 0.1 : 0,
                 }}
                 className={cn(
-                  "flex gap-3",
+                  "flex gap-2 sm:gap-3 min-w-0",
                   message.role === "user" ? "flex-row-reverse" : "flex-row",
                 )}
               >
@@ -595,16 +594,16 @@ export function ChatInterface({
                 {/* Message content */}
                 <div
                   className={cn(
-                    "flex flex-col gap-1 max-w-[calc(100%-3rem)]",
+                    "flex flex-col gap-1 min-w-0 max-w-[85%] sm:max-w-[calc(100%-3rem)]",
                     message.role === "user" ? "items-end" : "items-start",
                   )}
                 >
                   <div
                     className={cn(
-                      "rounded-2xl px-4 py-3 break-words overflow-hidden",
+                      "rounded-2xl px-4 py-3 break-words min-w-0 w-full",
                       message.role === "user"
-                        ? "bg-[#5865F2] text-white rounded-tr-sm"
-                        : "bg-fd-muted/50 border border-fd-border text-fd-foreground rounded-tl-sm",
+                        ? "bg-[#5865F2] text-white rounded-tr-sm overflow-hidden"
+                        : "bg-fd-muted/50 border border-fd-border text-fd-foreground rounded-tl-sm overflow-x-auto",
                     )}
                   >
                     {renderMessageContent(message.content)}
@@ -668,8 +667,8 @@ export function ChatInterface({
                 autoResize();
               }}
               onKeyDown={handleKeyDown}
-              placeholder="Ask about FiveM, RedM, or txAdmin... (Shift+Enter for newline)"
-              className="w-full bg-fd-muted/30 border border-fd-border focus:border-[#5865F2] focus:ring-1 focus:ring-[#5865F2]/20 rounded-xl text-sm resize-none overflow-hidden min-h-[40px] max-h-[160px] px-3 py-2 leading-[1.5] placeholder:text-muted-foreground focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+              placeholder="Ask Fixie about FiveM, RedM, txAdmin..."
+              className="w-full bg-fd-muted/30 border border-fd-border focus:border-[#5865F2] focus:ring-1 focus:ring-[#5865F2]/20 rounded-xl text-sm resize-none overflow-hidden min-h-[40px] max-h-[120px] sm:max-h-[160px] px-3 py-2 leading-[1.5] placeholder:text-muted-foreground focus:outline-none disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
               disabled={isLoading}
               rows={1}
               style={{ height: "40px" }}

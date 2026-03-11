@@ -1044,7 +1044,7 @@ interface Step {
 }
 
 interface StepListProps {
-  steps: Step[];
+  steps: (Step | string)[];
   title?: string;
   imagePosition?: "inline" | "below";
 }
@@ -1092,13 +1092,17 @@ export function StepList({
     return null;
   }
 
+  const normalizedSteps: Step[] = steps.map((step) =>
+    typeof step === "string" ? { title: step } : step,
+  );
+
   return (
     <div className="my-4">
       {title && (
         <h4 className="mb-3 font-semibold text-fd-foreground">{title}</h4>
       )}
       <div className="space-y-6">
-        {steps.map((step, index) => {
+        {normalizedSteps.map((step, index) => {
           const alertStyle = step.alert
             ? stepAlertConfig[step.alert.type]
             : null;
